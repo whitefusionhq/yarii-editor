@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  preview_base_url: MyString
+  published_base_url: MyString
+  content_base_path: MyString
+
+two:
+  title: MyString
+  preview_base_url: MyString
+  published_base_url: MyString
+  content_base_path: MyString

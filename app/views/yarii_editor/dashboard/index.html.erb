@@ -1,0 +1,14 @@
+<!-- <div data-controller="testengine"></div> -->
+<div class="carousel-frame">
+  <ul class="scroll">
+    <% @custom_lists.each do |model_details| %>
+      <%= render 'list', model_type: model_details[:model_type], model_details: model_details %>
+    <% end %>
+    <% Rails.configuration.content_models.each do |model_type, model_details| %>
+      <%= render 'list', model_type: model_type, model_details: model_details %>
+    <% end %>
+  </ul>
+</div>
+
+<section id="editor-modal-wrapper">
+</section>

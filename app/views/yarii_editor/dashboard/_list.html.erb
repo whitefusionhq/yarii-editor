@@ -1,0 +1,48 @@
+<%
+  model_type = local_assigns[:model_type]
+  model_details = local_assigns[:model_details]
+  model_class = model_details[:class_name].constantize
+  model_title = model_details.fetch(:title, model_class.name.titleize).pluralize
+%>
+<li class="scroll-item">
+  <div class="level">
+    <div class="level-left">
+      <h3 class="title level-item"><%= model_title %></h3>
+    </div>
+    <div class="level-right">
+      <button data-controller="new-document" data-action="new-document#open" data-new-document-path="<%= yarii_editor.new_document_path(content_model: model_type) %>" class="level-item button is-primary">
+        <span class="icon"><i class="fa fa-plus"></i></span>
+        <span>New</span>
+      </button>
+    </div>
+  </div>
+
+  <% 
+  models = if model_details[:datafile]
+    model_class.all(model_details[:datafile])[0...20]
+  else
+    if model_details[:filter] and model_details[:filter][:hashtags]
+      model_class.all.select do |model|
+        if model.respond_to?(:tags) and model.tags.present?
+          tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
+          (tags & model_details[:filter][:hashtags]).present?
+        end
+      end[0...20]
+    elsif model_details[:filter] and model_details[:filter][:categories]
+      model_class.all.select do |model|
+        categories = model.as_json['category'] || model.as_json['categories']
+        if categories.present?
+          categories = categories.is_a?(Array) ? categories : categories.split(' ')
+          (categories & model_details[:filter][:categories]).present?
+        end
+      end[0...20]
+    else
+      model_class.all[0...20]
+    end
+  end
+  models.each do |model| %>
+    <div data-controller="card" class="card <%= 'tagged-' + ['draft', 'queued', 'published'].sample %>">
+      <%= render 'yarii_editor/model_cards/' + model_class.name.underscore, props: {model: model, content_model_type: model_type} %>
+    </div>
+  <% end %>
+</li>

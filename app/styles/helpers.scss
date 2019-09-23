@@ -1,0 +1,45 @@
+/* Add Tailwindcss-ish margin and padding helpers */
+
+$sizes: 
+  0 0,
+  1 0.25,
+  2 0.5,
+  3 0.75,
+  4 1,
+  5 1.25,
+  6 1.5,
+  8 2,
+  10 2.5,
+  12 3,
+  16 4,
+  20 5,
+  24 6,
+  32 8,
+  40 10,
+  48 12,
+  56 14,
+  64 16;
+$positions: ('top','left','bottom','right');
+
+@each $index, $size in $sizes {
+  @each $position in $positions {
+    .m#{str-slice($position, 0, 1)}-#{$index} {
+      margin-#{$position}: $size + rem;
+    }
+    .p#{str-slice($position, 0, 1)}-#{$index} {
+      padding-#{$position}: $size + rem;
+    }
+    .-m#{str-slice($position, 0, 1)}-#{$index} {
+      margin-#{$position}: -$size + rem;
+    }
+  }
+}
+
+.m-auto {
+  margin: auto;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+

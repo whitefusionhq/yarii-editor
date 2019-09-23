@@ -1,0 +1,14 @@
+<header class="card-header">
+  <p class="card-header-title">
+    <%= props[:model].title %>
+  </p>
+</header>
+<div class="card-content">
+  <div class="content">
+    <p><%= props[:model].subtitle || props[:model].content.truncate(250) %></p>
+    <p class="has-text-right"><time datetime="<%= props[:model].posted_datetime.strftime('%Y-%-m-%-d') %>"><%= props[:model].posted_datetime.strftime('%B %-d, %Y') %></time></p>
+  </div>
+</div>
+<footer class="card-footer">
+  <%= render 'yarii_editor/model_cards/standard_footer_buttons', props: {model: props[:model], content_model_type: props[:content_model_type]} %>
+</footer>

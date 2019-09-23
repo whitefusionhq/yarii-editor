@@ -1,0 +1,88 @@
+.carousel-frame {
+//  background: #fafafa;
+  padding: 0px;
+//  border-radius: 3px;
+//  border: 1px solid #ddd;
+  width: 100vw;
+
+/*  .level {
+    border-bottom: 4px solid #363636;
+    padding-bottom: 8px;
+  } */
+  .level .title {
+    box-shadow: inset 0px -6px 0px #858177;
+    line-height: 1;
+//    border-bottom: 4px solid lighten($beige-dark, 25%);
+  }
+}
+
+.scroll {
+  display: flex;
+  align-items: top;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+
+  height: calc(100vh - 70px);
+}
+
+ul.scroll {
+  margin: 0;
+  list-style-type: none;
+}
+
+.scroll-item {
+  flex: 0 0 32vw;
+  height: 100%;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .scroll-item {
+    flex: 0 0 99vw;
+  }
+}
+
+img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-item .card {
+  margin-bottom: 15px;
+}
+.card time {
+  color: $green;
+  font-size: 0.85em;
+}
+
+.card {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  &.tagged-draft {
+    border-top: 10px solid $orange;
+  }
+  &.tagged-queued {
+    border-top: 10px solid lighten($blue, 20%);
+  }
+  &.tagged-published {
+    border-top: 10px solid $green;
+  }
+}
+
+@supports (scroll-snap-align: start) {
+  /* modern scroll snap points */
+  .scroll {
+    scroll-snap-type: x mandatory;
+  }
+  .scroll-item {
+    scroll-snap-align: center;
+  }
+}
+
+.carousel-frame {
+  margin-top: 4em;
+}

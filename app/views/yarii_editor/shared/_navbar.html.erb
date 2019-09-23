@@ -1,0 +1,52 @@
+<nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <h1 class="navbar-item"><%= image_tag 'yarii_editor/butterfly-small.png', alt: 'Yarii' %> Yarii</h1>
+
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false" onclick="document.querySelectorAll('.navbar .navbar-burger, #navMenu').forEach((item) => {item.classList.toggle('is-active')})">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div class="navbar-menu" id="navMenu">
+    <div class="navbar-start">
+      <div class="navbar-item">Legend:</div>
+      <div class="navbar-item"><span class="tag is-primary">Draft</span></div>
+      <div class="navbar-item"><span class="tag is-info">Queued</span></div>
+      <div class="navbar-item"><span class="tag is-success">Public</span></div>
+      
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Publishing
+        </a>
+
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item">
+            Push to Public
+          </a>
+          <a class="navbar-item">
+            Compare Changes
+          </a>
+          <a class="navbar-item">
+            Push History
+          </a>
+          <hr class="navbar-divider">
+          <div class="navbar-item">
+            <small><strong>Last Push: [date]</strong></small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <span style="font-weight:bold"><%= current_site.title %></span>
+        <div class="buttons">
+
+  <!--        <button class="button is-primary" onclick="previous()">Previous</button>
+          <button class="button is-info" onclick="next()">Next</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

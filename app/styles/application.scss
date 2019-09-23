@@ -1,0 +1,124 @@
+@charset "utf-8";
+
+@import "../../node_modules/easymde/dist/easymde.min.css";
+
+/* Colors */
+$orange: #FF6F59;
+$darkorange: #DB504A;
+$blue: #00324c;
+$lightblue: #c9e3ff;
+$green: #43AA8B;
+$darkgreen: #254441;
+$lightgreen: rgb(211, 237, 221);
+$beige-light: #B2B09B;
+$beige-dark: #42403B;
+$beige-darker: #363430;
+
+/* Set up Bulma color scheme */
+$grey-dark: $beige-dark;
+$grey-darker: $beige-darker;
+$grey-light: $beige-light;
+$primary: $orange;
+$link: $darkorange;
+$dark: $blue;
+$success: $green;
+
+$text: $beige-darker;
+$body-background-color: $beige-light;
+$family-serif: 'Orpheus W01', serif;
+$family-sans-serif: 'Neuzeit Office W01', sans-serif;
+//$title-family: rufina, sans-serif;
+//$title-weight: 700;
+$title-family: 'Sui Generis W01', serif;
+$title-weight: 700;
+.title {
+  font-style: italic;
+  letter-spacing: -0.03em;
+}
+$title-size: 2.2rem;
+
+$button-border-width: 0;
+
+$card-shadow: 0 0px 3px rgba(10, 10, 10, 0.2);
+$card-header-shadow: none;
+$card-content-padding: 0.9rem 0.8rem 0.8rem;
+$card-header-color: $darkorange;
+$card-header-family: $family-serif;
+$card-header-weight: 400;
+$card-header-background-color: #fafaf6;
+$card-header-border-bottom: 1px solid darken($card-header-background-color, 7%);
+.card-header-title {
+  font-family: $card-header-family;
+  font-size: 1.75em;
+  line-height: 1.25;
+  border-bottom: $card-header-border-bottom;
+}
+$card-footer-border-top: $card-header-border-bottom;
+$card-footer-background-color: $card-header-background-color;
+$card-footer-padding: 0.5rem;
+
+$modal-card-head-background-color: $dark;
+$modal-card-foot-background-color: $dark;
+$modal-content-width: 800px;
+$modal-card-body-background-color: $card-header-background-color;
+$modal-card-title-color: $orange;
+$modal-card-title-size: 1.75em;
+.modal-card-title {
+  font-family: $card-header-family;
+}
+
+$radius: 5px;
+$radius-large: 10px;
+
+@import "~bulma/bulma.sass";
+@import "helpers.scss";
+@import "dashboard.scss";
+@import "editor.scss";
+
+.navbar.is-dark {
+  background-color: $dark;
+  box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.navbar-brand h1 {
+  color: $primary !important;
+  font-family: $title-family;
+  font-weight: 700;
+  font-size: 1.35em;
+  font-style: italic;
+  letter-spacing: 0;
+
+  img {
+//    width: 45px;
+    width: 35.33px;
+    max-height: 100% !important;
+    margin-right: 0.3em;
+    transform: rotate(-10deg);
+  }
+}
+
+.button, .card-footer {
+//  font-weight: bold;
+}
+
+.card-footer {
+  a {
+    color: $beige-dark;
+    font-size: 0.9em;
+  }
+}
+.card-footer-item:not(:last-child) {
+  border-right: none;
+}
+
+.modal-background {
+  background-color: rgba(12, 11, 10, 0.8);
+}
+.modal-card {
+  box-shadow: 0px 30px 50px 10px rgba(12,11,10,0.5);
+}
+.modal-card-foot {
+  justify-content: flex-end;
+}
