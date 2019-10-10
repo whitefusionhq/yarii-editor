@@ -1,3 +1,4 @@
+<%- props = local_assigns %>
 <% if props[:model].is_a? Yarii::DatafileModel %>
   <a data-action="card#edit" href="<%= yarii_editor.edit_document_path(props[:model], content_model: props[:content_model_type], key_path: props[:model].key_path) %>" class="card-footer-item">
     <span class="icon"><i class="fa fa-pencil-square-o"></i></span>
@@ -12,7 +13,7 @@
     <span class="icon"><i class="fa fa-eye"></i></span>
     <span>Preview</span>
   </a>
-  <a href="#" class="card-footer-item">
+  <a data-action="card#destroy" href="<%= yarii_editor.destroy_document_path(props[:model], content_model: props[:content_model_type]) %>" data-card-id="<%= props[:content_model_type] %>-<%= props[:model].id %>" class="card-footer-item">
     <span class="icon"><i class="fa fa-trash"></i></span>
     <span>Delete</span>
   </a>

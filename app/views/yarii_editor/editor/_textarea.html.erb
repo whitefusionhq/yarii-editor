@@ -1,0 +1,13 @@
+<%-
+  props = local_assigns
+  input_classes = ['textarea']
+  input_classes << className if props[:className]
+  name = name_from_variable(props)
+  value = value_from_variable(props) || ""
+%>
+<div class="field">
+  <label class="label"><%= props[:label] %></label>
+  <div class="control">
+    <%= content_tag :textarea, value, name: name, class: input_classes.join(' '), rows: 2, placeholder: props[:placeholder] %>
+  </div>
+</div>

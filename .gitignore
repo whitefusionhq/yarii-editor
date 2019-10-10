@@ -6,7 +6,9 @@ test/dummy/db/*.sqlite3-journal
 test/dummy/log/*.log
 test/dummy/storage/
 test/dummy/tmp/
+tmp/
 
 node_modules/
 
 /config/master.key
+public/

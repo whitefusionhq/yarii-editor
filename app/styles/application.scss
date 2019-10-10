@@ -1,5 +1,8 @@
 @charset "utf-8";
 
+@import "./FiraGO/FiraGO.scss";
+@import "./Vidaloka/Vidaloka.scss";
+
 @import "../../node_modules/easymde/dist/easymde.min.css";
 
 /* Colors */
@@ -25,15 +28,17 @@ $success: $green;
 
 $text: $beige-darker;
 $body-background-color: $beige-light;
-$family-serif: 'Orpheus W01', serif;
-$family-sans-serif: 'Neuzeit Office W01', sans-serif;
+$family-serif: 'Vidaloka', serif;
+$family-sans-serif: 'FiraGO', sans-serif;
 //$title-family: rufina, sans-serif;
 //$title-weight: 700;
-$title-family: 'Sui Generis W01', serif;
-$title-weight: 700;
+$title-family: 'FiraGO', sans-serif;
+$title-weight: 900;
+$title-style: italic;
+$title-spacing: -0.03em;
 .title {
-  font-style: italic;
-  letter-spacing: -0.03em;
+  font-style: $title-style;
+  letter-spacing: $title-spacing;
 }
 $title-size: 2.2rem;
 
@@ -49,13 +54,16 @@ $card-header-background-color: #fafaf6;
 $card-header-border-bottom: 1px solid darken($card-header-background-color, 7%);
 .card-header-title {
   font-family: $card-header-family;
-  font-size: 1.75em;
-  line-height: 1.25;
+  font-size: 1.85em;
+  line-height: 1.15;
   border-bottom: $card-header-border-bottom;
 }
 $card-footer-border-top: $card-header-border-bottom;
 $card-footer-background-color: $card-header-background-color;
 $card-footer-padding: 0.5rem;
+.card-footer-item:hover {
+  background-color: #f0f0e3;
+}
 
 $modal-card-head-background-color: $dark;
 $modal-card-foot-background-color: $dark;
@@ -85,10 +93,10 @@ $radius-large: 10px;
 .navbar-brand h1 {
   color: $primary !important;
   font-family: $title-family;
-  font-weight: 700;
+  font-weight: $title-weight;
   font-size: 1.35em;
-  font-style: italic;
-  letter-spacing: 0;
+  font-style: $title-style;
+  letter-spacing: $title-spacing;
 
   img {
 //    width: 45px;

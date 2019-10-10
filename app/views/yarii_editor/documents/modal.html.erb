@@ -1,0 +1,77 @@
+<%-
+  path = nil
+  if action_name == "new"
+    path = yarii_editor.create_document_path(content_model: params[:content_model])
+    http_method = "post"
+  else
+    if params[:key_path]
+      path = yarii_editor.update_document_path(@doc, content_model: params[:content_model], key_path: params[:key_path])
+    else
+      path = yarii_editor.update_document_path(@doc, content_model: params[:content_model])
+    end
+    http_method = "put"
+  end
+%>
+<div data-controller="editor-modal" data-editor-modal-path="<%= path %>" data-editor-modal-content-model="<%= params[:content_model] %>" data-editor-modal-model-id="<%= params[:id] %>" id="editor-modal" class="modal is-active" data-editor-modal-http-method="<%= http_method %>">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title"><%= @doc_heading %></p>
+      <button data-action="editor-modal#cancel" class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <%= form_tag do %>
+        <% Rails.configuration.content_models[params[:content_model].to_sym][:primary_fields].each do |field| %>
+          <%= add_field field[:field_type], {
+            variable: field[:field_name],
+            label: field[:label],
+            placeholder: field[:placeholder],
+            class_name: field[:class_names]
+          } %>
+        <% end %>
+
+        <div class="mb-2 has-text-right"><button data-action="editor-modal#showAdditionalFields" class="button is-text is-small">Additional Fields…</button></div>
+        <div data-target="editor-modal.additionalFields" class="is-hidden mb-4">
+          <% Rails.configuration.content_models[params[:content_model].to_sym][:additional_fields].each do |field| %>
+            <%= add_field field[:field_type], {
+              variable: field[:field_name],
+              label: field[:label],
+              placeholder: field[:placeholder],
+              class_name: field[:class_names]
+            } %>
+          <% end %>
+        </div>
+
+        <% Rails.configuration.content_models[params[:content_model].to_sym][:content_fields].each do |field| %>
+          <%= add_field field[:field_type], {
+            variable: field[:field_name],
+            label: field[:label],
+            placeholder: field[:placeholder],
+            class_name: field[:class_names]
+          } %>
+        <% end %>
+      <% end %>
+    </section>
+    <footer class="modal-card-foot">
+      <button data-action="editor-modal#cancel" class="button is-dark is-text">Cancel</button>
+      &nbsp;
+      <button data-action="editor-modal#save" class="button is-success">Save Changes</button>
+    </footer>
+  </div>
+</div>
+
+<div id="imagemodal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Cloudinary Images</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <button class="button is-primary">This one!</button>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button" onclick="document.querySelector('#imagemodal').classList.remove('is-active')">Cancel</button>
+    </footer>
+  </div>
+</div>

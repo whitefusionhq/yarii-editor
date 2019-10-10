@@ -17,32 +17,32 @@
     </div>
   </div>
 
-  <% 
-  models = if model_details[:datafile]
-    model_class.all(model_details[:datafile])[0...20]
-  else
-    if model_details[:filter] and model_details[:filter][:hashtags]
-      model_class.all.select do |model|
-        if model.respond_to?(:tags) and model.tags.present?
-          tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
-          (tags & model_details[:filter][:hashtags]).present?
-        end
-      end[0...20]
-    elsif model_details[:filter] and model_details[:filter][:categories]
-      model_class.all.select do |model|
-        categories = model.as_json['category'] || model.as_json['categories']
-        if categories.present?
-          categories = categories.is_a?(Array) ? categories : categories.split(' ')
-          (categories & model_details[:filter][:categories]).present?
-        end
-      end[0...20]
+  <div id="list-<%= model_type %>">
+    <% 
+    models = if model_details[:datafile]
+      model_class.all(model_details[:datafile])[0...20]
     else
-      model_class.all[0...20]
+      if model_details[:filter] and model_details[:filter][:hashtags]
+        model_class.all.select do |model|
+          if model.respond_to?(:tags) and model.tags.present?
+            tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
+            (tags & model_details[:filter][:hashtags]).present?
+          end
+        end[0...20]
+      elsif model_details[:filter] and model_details[:filter][:categories]
+        model_class.all.select do |model|
+          categories = model.as_json['category'] || model.as_json['categories']
+          if categories.present?
+            categories = categories.is_a?(Array) ? categories : categories.split(' ')
+            (categories & model_details[:filter][:categories]).present?
+          end
+        end[0...20]
+      else
+        model_class.all[0...20]
+      end
     end
-  end
-  models.each do |model| %>
-    <div data-controller="card" class="card <%= 'tagged-' + ['draft', 'queued', 'published'].sample %>">
-      <%= render 'yarii_editor/model_cards/' + model_class.name.underscore, props: {model: model, content_model_type: model_type} %>
-    </div>
-  <% end %>
+    models.each do |model| %>
+      <%= render 'yarii_editor/dashboard/card', model_class: model_class, model: model, content_model_type: model_type %>
+    <% end %>
+  </div>
 </li>

@@ -1,0 +1,13 @@
+<%-
+  props = local_assigns
+  input_classes = ['textarea']
+  input_classes << className if props[:className]
+  name = name_from_variable(props)
+  value = value_from_variable(props) || ""
+%>
+<div data-controller="markdown-editor" class="field">
+  <% if props[:label] %><label class="label"><%= props[:label] %></label><% end %>
+  <div class="control">
+    <%= content_tag :textarea, value, name: name, data: {target: 'markdown-editor.editor'}, class: input_classes.join(' '), rows: 10, placeholder: props[:placeholder] %>
+  </div>
+</div>

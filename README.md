@@ -1,10 +1,13 @@
 # Yarii Editor Engine
-Short description and motivation.
+
+Short description and motivation. Etc.
 
 ## Usage
+
 How to use my plugin.
 
 ## Installation
+
 Add this line to your application's Gemfile:
 
 ```ruby

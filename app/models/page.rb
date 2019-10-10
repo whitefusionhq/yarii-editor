@@ -1,5 +1,5 @@
 class Page < ::ApplicationContentModel
-  variables :layout, :title, :subtitle, :permalink
+  variables :layout, :date, :title, :subtitle, :permalink
 
   before_save :strip_layout
 

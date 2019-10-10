@@ -1,0 +1,13 @@
+<%-
+  props = local_assigns
+  input_classes = ['input']
+  input_classes << className if props[:className]
+  name = name_from_variable(props)
+  value = value_from_variable(props)
+%>
+<div class="field">
+  <label class="label"><%= props[:label] %></label>
+  <div class="control">
+    <%= content_tag :input, nil, name: name, value: value, class: input_classes.join(' '), type: 'text', placeholder: props[:placeholder] %>
+  </div>
+</div>

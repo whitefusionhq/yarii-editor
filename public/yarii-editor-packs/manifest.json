@@ -1,14 +1,22 @@
 {
-  "application.js": "/yarii-editor-packs/js/application-4877bb7cf67da53a6da8.js",
-  "application.js.map": "/yarii-editor-packs/js/application-4877bb7cf67da53a6da8.js.map",
+  "application.js": "/yarii-editor-packs/js/application-e1b1025fd35ef1897504.js",
+  "application.js.map": "/yarii-editor-packs/js/application-e1b1025fd35ef1897504.js.map",
   "entrypoints": {
     "application": {
       "js": [
-        "/yarii-editor-packs/js/application-4877bb7cf67da53a6da8.js"
+        "/yarii-editor-packs/js/application-e1b1025fd35ef1897504.js"
       ],
       "js.map": [
-        "/yarii-editor-packs/js/application-4877bb7cf67da53a6da8.js.map"
+        "/yarii-editor-packs/js/application-e1b1025fd35ef1897504.js.map"
       ]
     }
-  }
+  },
+  "media/FiraGO/FiraGO-Bold.woff": "/yarii-editor-packs/media/FiraGO/FiraGO-Bold-666ae60f.woff",
+  "media/FiraGO/FiraGO-BoldItalic.woff": "/yarii-editor-packs/media/FiraGO/FiraGO-BoldItalic-c197e645.woff",
+  "media/FiraGO/FiraGO-Book.woff": "/yarii-editor-packs/media/FiraGO/FiraGO-Book-676b2fe3.woff",
+  "media/FiraGO/FiraGO-BookItalic.woff": "/yarii-editor-packs/media/FiraGO/FiraGO-BookItalic-79b4c423.woff",
+  "media/FiraGO/FiraGO-HeavyItalic.woff": "/yarii-editor-packs/media/FiraGO/FiraGO-HeavyItalic-8a73d743.woff",
+  "media/FiraGO/FiraGO-SemiBold.woff": "/yarii-editor-packs/media/FiraGO/FiraGO-SemiBold-2fe028c2.woff",
+  "media/FiraGO/FiraGO-SemiBoldItalic.woff": "/yarii-editor-packs/media/FiraGO/FiraGO-SemiBoldItalic-2b9d3213.woff",
+  "media/Vidaloka/Vidaloka-Regular.woff": "/yarii-editor-packs/media/Vidaloka/Vidaloka-Regular-68231b62.woff"
 }

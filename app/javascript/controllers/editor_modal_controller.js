@@ -26,8 +26,18 @@ export default class extends Controller {
       let response = null
       if (httpMethod == 'post') {
         response = await this.axios.post(savePath, data)
+        const newCard = document.createElement('template')
+        newCard.innerHTML = response.data.document_html
+        console.log("new card!", newCard)
+        const list = document.getElementById('list-' + this.data.get('content-model'))
+        console.log("list!", list)
+        list.prepend(newCard.content.cloneNode(true))
+
+        console.log("done!")
       } else if (httpMethod == 'put') {
         response = await this.axios.put(savePath, data)
+        const updatedCard = response.data.document_html
+        document.getElementById(this.data.get('content-model') + '-' + this.data.get('model-id')).outerHTML = updatedCard
       }
       this.closeModal()
     } catch (error) {
