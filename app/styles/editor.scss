@@ -3,7 +3,7 @@
   color: $beige-dark;
 }
 
-.CodeMirror-fullscreen {
+.CodeMirror-fullscreen:not(.CodeMirror-sided) {
   padding-top: 30px;
   padding-left: 20vw;
   padding-right: 20vw;

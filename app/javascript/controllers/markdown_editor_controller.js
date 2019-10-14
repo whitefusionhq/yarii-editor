@@ -6,14 +6,17 @@ import { Controller } from "stimulus"
 export default class extends Controller {
   static targets = [ "editor" ]
 
-  doSomething(editor) {
+  yariiCustomImage(editor) {
     var cm = editor.codemirror
 
+    // TODO: figure out how to hook Cloudinary into this custom action
+    /*
     document.querySelector('#imagemodal').classList.add('is-active')
     document.querySelector('#imagemodal button.button').addEventListener('click', () => {
       document.querySelector('#imagemodal').classList.remove('is-active')
       replaceEditorSelection(cm, null, ["{% 'foobar' | cloudinary_image:'q_50' %}", ''])
     })
+    */
   }
 
   connect() {
@@ -98,10 +101,10 @@ export default class extends Controller {
             title: 'Create Link'
         },
         {
-          name: 'cloudinary',
-          action: (editor) => {this.doSomething(editor)},
+          name: 'yarii-custom-image',
+          action: (editor) => {this.yariiCustomImage(editor)},
           className: 'fa fa-image',
-          title: 'Insert Cloudinary Image'
+          title: 'Insert Image'
         },
         {
             name: 'horizontal-rule',

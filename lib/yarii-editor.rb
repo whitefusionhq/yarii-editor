@@ -1,5 +1,5 @@
 require "yarii-editor/engine"
-require "yarii-editor/setup_site_path"
+require "yarii-editor/setup_current_site"
 
 module YariiEditor
   ROOT_PATH = Pathname.new(File.join(__dir__, ".."))

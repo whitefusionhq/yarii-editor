@@ -5,11 +5,11 @@ module YariiEditor
     before_action :set_content_model_base_path
 
     def set_content_model_base_path
-      SitePath.setup
+      CurrentSite.setup
     end
 
     def current_site
-      SitePath.current_site
+      CurrentSite.site
     end
     helper_method :current_site
   end
