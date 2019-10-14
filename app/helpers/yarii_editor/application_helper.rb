@@ -1,4 +1,4 @@
-module Yarii
+module YariiEditor
   module ApplicationHelper
     include ::Webpacker::Helper
 
