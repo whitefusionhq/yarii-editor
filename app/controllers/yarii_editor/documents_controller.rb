@@ -70,6 +70,19 @@ module YariiEditor
     def secure_params
       variable_names = content_model.variable_names + [:content]
 
+      variable_names = variable_names.map do |variable|
+        if params[params[:content_model].to_sym][variable.to_sym].is_a? Array
+          # scrub empty values
+          params[params[:content_model].to_sym][variable.to_sym] = params[params[:content_model].to_sym][variable.to_sym].select do |value|
+            value.present?
+          end
+          # permit the array variable
+          { variable => [] }
+        else
+          variable
+        end
+      end
+
       # Markdown editor adds carriage returns for some reason. Take them out!
       if params[params[:content_model].to_sym][:content]
         params[params[:content_model].to_sym][:content] = params[params[:content_model].to_sym][:content].gsub(/\r/, '')
