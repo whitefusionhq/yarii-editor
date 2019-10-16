@@ -3,7 +3,7 @@ import axios from "axios"
 import { axiosPostable } from "../lib/utils"
 
 export default class extends Controller {
-  static targets = [ "additionalFields" ]
+  static targets = [ "additionalFields", "status" ]
   
   initialize() {
     this.axios = axiosPostable(axios)
@@ -21,6 +21,11 @@ export default class extends Controller {
 
     const savePath = this.data.get('path')
     const httpMethod = this.data.get('http-method')
+
+    this.element.querySelector('.modal-card-body > form').classList.add('dimmed')
+    this.element.querySelector('button[data-action="editor-modal#save"]').classList.add('is-loading')
+    this.statusTarget.classList.add('in-progress')
+    this.statusTarget.innerHTML = "Generating Preview…"
 
     try {
       let response = null

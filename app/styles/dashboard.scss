@@ -85,6 +85,10 @@ img {
   &.tagged-published {
     border-top: 10px solid $green;
   }
+
+  .card-image {
+    border-bottom: $card-header-border-bottom;
+  }
 }
 
 @supports (scroll-snap-align: start) {

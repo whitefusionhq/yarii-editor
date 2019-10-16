@@ -83,6 +83,14 @@ module YariiEditor
         end
       end
 
+      # Scrub blank string values
+      variable_names.each do |variable|
+        value = params[params[:content_model].to_sym][variable.to_sym]
+        if value.is_a?(String) and value.strip.blank?
+          params[params[:content_model].to_sym][variable.to_sym] = nil
+        end
+      end
+
       # Markdown editor adds carriage returns for some reason. Take them out!
       if params[params[:content_model].to_sym][:content]
         params[params[:content_model].to_sym][:content] = params[params[:content_model].to_sym][:content].gsub(/\r/, '')
