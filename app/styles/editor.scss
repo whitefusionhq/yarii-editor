@@ -20,3 +20,7 @@
 .CodeMirror:not(.CodeMirror-fullscreen) .CodeMirror-scroll {
   max-height: 42vh;
 }
+
+.CodeMirror-placeholder {
+  opacity: 0.2;
+}
