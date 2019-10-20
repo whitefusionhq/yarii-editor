@@ -1,0 +1,40 @@
+<a href="javascript:void(0);" class="navbar-link">
+  Publishing
+  <span class="publishing-status">
+    <% if current_site.repository.changes.total > 0 %>
+      <span class="ml-2 tag is-danger">Updates</span>
+    <% end %>
+  </span>
+</a>
+
+<div class="navbar-dropdown is-boxed">
+  <% if current_site.repository.changes.total > 0 %>
+    <a href="javascript:void(0)" class="navbar-item is-size-6 has-text-weight-bold">
+      Push Updates to Public
+    </a>
+    <hr class="navbar-divider" />
+    <a href="javascript:alert('To Be Implemented…')" class="navbar-item">
+      Compare Changes
+    </a>
+  <% else %>
+    <a href="javascript:void(0)" class="navbar-item is-italic">
+      All Up to Date!
+    </a>
+  <% end %>
+  <a href="javascript:alert('To Be Implemented…')" class="navbar-item">
+    Push History
+  </a>
+  <hr class="navbar-divider" />
+  <div class="navbar-item has-text-weight-bold is-size-8">
+    Last Push: <%= current_site.repository.git.log.first.date.in_time_zone.strftime('%B %-d, %Y') %>
+  </div>
+  <hr class="navbar-divider" />
+  <a href="<%= current_site.preview_base_url %>" target="_blank" class="navbar-item">
+    <span>Open Preview Website</span>
+    <span class="icon"><i class="fa fa-external-link"></i></span>
+  </a>
+  <a href="<%= current_site.published_base_url %>" target="_blank" class="navbar-item">
+    <span>Open Public Website</span>
+    <span class="icon"><i class="fa fa-external-link"></i></span>
+  </a>
+</div>

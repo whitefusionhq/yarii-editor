@@ -1,8 +1,11 @@
 module YariiEditor
   class DocumentsController < ApplicationController
+    before_action :pull_if_needed, only: [:create, :update, :destroy]
+
     def new
       @doc_heading = "New #{model_title}"
       @doc = content_model.new
+      @doc.published = true # default to adding to public publishing
       render 'modal', layout: nil
     end
 
@@ -83,11 +86,14 @@ module YariiEditor
         end
       end
 
-      # Scrub blank string values
       variable_names.each do |variable|
         value = params[params[:content_model].to_sym][variable.to_sym]
         if value.is_a?(String) and value.strip.blank?
+          # Scrub blank string values
           params[params[:content_model].to_sym][variable.to_sym] = nil
+        elsif value.is_a?(String) and value.strip.match(/false|true/)
+          # Convert to real boolean values
+          params[params[:content_model].to_sym][variable.to_sym] = params[params[:content_model].to_sym][variable.to_sym].strip == 'true'
         end
       end
 

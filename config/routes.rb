@@ -6,5 +6,7 @@ YariiEditor::Engine.routes.draw do
   put 'documents/:content_model/:id', to: 'documents#update', as: 'update_document'
   delete 'documents/:content_model/:id', to: 'documents#destroy', as: 'destroy_document'
 
+  get 'publish/menu', to: 'publish#menu', as: 'publishing_menu'
+
   root to: "dashboard#index"
 end

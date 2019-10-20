@@ -8,6 +8,7 @@ module CurrentSite
     self.site = newSite
     Yarii::ContentModel.base_path = site.content_base_path
     Yarii::DatafileModel.base_path = site.content_base_path
+    self.site
   end
 
   def self.reset

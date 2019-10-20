@@ -16,6 +16,7 @@ $lightgreen: rgb(211, 237, 221);
 $beige-light: #B2B09B;
 $beige-dark: #42403B;
 $beige-darker: #363430;
+$yellow: rgb(255, 251, 241);
 
 /* Set up Bulma color scheme */
 $grey-dark: $beige-dark;
@@ -25,6 +26,7 @@ $primary: $orange;
 $link: $darkorange;
 $dark: $blue;
 $success: $green;
+$warning: darken($yellow, 25%);
 
 $text: $beige-darker;
 $body-background-color: $beige-light;
@@ -74,6 +76,9 @@ $modal-card-title-size: 1.75em;
 .modal-card-title {
   font-family: $card-header-family;
 }
+
+$content-blockquote-background-color: $yellow;
+$content-blockquote-border-left: 6px solid $orange;
 
 $radius: 5px;
 $radius-large: 10px;

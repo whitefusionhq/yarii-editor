@@ -16,26 +16,8 @@
       <div class="navbar-item"><span class="tag is-info">Queued</span></div>
       <div class="navbar-item"><span class="tag is-success">Public</span></div>
       
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a href="javascript:void(0);" class="navbar-link">
-          Publishing
-        </a>
-
-        <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item">
-            Push to Public
-          </a>
-          <a class="navbar-item">
-            Compare Changes
-          </a>
-          <a class="navbar-item">
-            Push History
-          </a>
-          <hr class="navbar-divider">
-          <div class="navbar-item">
-            <small><strong>Last Push: [date]</strong></small>
-          </div>
-        </div>
+      <div id="publishing-menu" class="navbar-item has-dropdown is-hoverable">
+        <%= render 'yarii_editor/shared/publishing_menu' %>
       </div>
     </div>
     <div class="navbar-end">

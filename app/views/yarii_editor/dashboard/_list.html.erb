@@ -5,7 +5,7 @@
   model_title = model_details.fetch(:title, model_class.name.titleize).pluralize
 %>
 <li class="scroll-item">
-  <div class="level">
+  <div class="level is-mobile">
     <div class="level-left">
       <h3 class="title level-item"><%= model_title %></h3>
     </div>
@@ -17,6 +17,7 @@
     </div>
   </div>
 
+  <div class="vertical-scroll">
   <div id="list-<%= model_type %>">
     <% 
     models = if model_details[:datafile]
@@ -45,4 +46,4 @@
       <%= render 'yarii_editor/dashboard/card', model_class: model_class, model: model, content_model_type: model_type %>
     <% end %>
   </div>
-</li>
+</div></li>

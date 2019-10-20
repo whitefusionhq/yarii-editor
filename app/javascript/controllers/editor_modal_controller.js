@@ -44,6 +44,8 @@ export default class extends Controller {
         const updatedCard = response.data.document_html
         document.getElementById(this.data.get('content-model') + '-' + this.data.get('model-id')).outerHTML = updatedCard
       }
+      console.log('about to refresh')
+      this.refreshPublishingMenu()
       this.closeModal()
     } catch (error) {
       alert("I'm sorry, I ran into trouble communicating with the server. Please copy your content to another text editor to preserve your work if this problem persists.")
@@ -61,5 +63,17 @@ export default class extends Controller {
   
   showAdditionalFields() {
     this.additionalFieldsTarget.classList.remove('is-hidden')
+  }
+
+  async refreshPublishingMenu() {
+    console.log("running the axios…")
+    try {
+      let response = null
+      response = await this.axios.get(this.data.get('publishing-menu-path'))
+      console.log("got the axios!", response)
+      document.getElementById('publishing-menu').innerHTML = response.data
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

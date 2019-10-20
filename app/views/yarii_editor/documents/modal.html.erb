@@ -12,7 +12,16 @@
     http_method = "put"
   end
 %>
-<div data-controller="editor-modal" data-editor-modal-path="<%= path %>" data-editor-modal-content-model="<%= params[:content_model] %>" data-editor-modal-model-id="<%= params[:id] %>" id="editor-modal" class="modal is-active" data-editor-modal-http-method="<%= http_method %>">
+<div
+  data-controller="editor-modal"
+  data-editor-modal-http-method="<%= http_method %>"
+  data-editor-modal-path="<%= path %>"
+  data-editor-modal-content-model="<%= params[:content_model] %>"
+  data-editor-modal-model-id="<%= params[:id] %>"
+  data-editor-modal-publishing-menu-path="<%= yarii_editor.publishing_menu_path %>"
+  id="editor-modal"
+  class="modal is-active"
+>
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
@@ -32,6 +41,13 @@
 
         <div class="mb-2 has-text-right"><button data-action="editor-modal#showAdditionalFields" class="button is-text is-small">Additional Fields…</button></div>
         <div data-target="editor-modal.additionalFields" class="is-hidden mb-4">
+          <div class="field">
+            <label class="label">Publish to Public?</label>
+            <div class="control">
+              <%= hidden_field_tag "#{params[:content_model]}[published]", false %>
+              <%= check_box_tag "#{params[:content_model]}[published]", true, @doc.published %>
+            </div>
+          </div>
           <% Rails.configuration.content_models[params[:content_model].to_sym][:additional_fields].each do |field| %>
             <%= add_field field[:field_type], {
               variable: field[:field_name],

@@ -3,31 +3,11 @@ require 'git'
 class Yarii::Repository
   attr_accessor :repo_dir, :git
 
+  Changeset = Struct.new(:total, :added, :modified, :deleted, keyword_init: true)
+
   def initialize(repo_dir)
-    # TODO: allow passing in a list of ignored files for determining changes
     @repo_dir = repo_dir
     @git = Git.open(@repo_dir)
-  end
-
-  def changes?
-    git_diff = @git.lib.diff_index('HEAD').values
-    if git_diff.present?
-      return true unless git_diff.length == 1 && git_diff.first[:path].to_s.include?("Procfile")
-    end
-
-    false
-
-# NOTE: THIS CODE IS TOO SLOW! keeping for future reference
-#
-#    changed_files = @git.status.changed
-
-    # don't include small changes to _site only, such as feed.xml, etc.
-#    changed = changed_files.length - changed_files.keys.select{|item| item.include?('_site/')}.length
-
-#    added = @git.status.added.length
-#    deleted = @git.status.deleted.length
-
-#    (changed + added + deleted) > 0
   end
 
   def add(filepath)
@@ -38,6 +18,17 @@ class Yarii::Repository
     @git.remove(filepath)
   end
 
+  def changes(only_indexed: true)
+    indexed_flag = only_indexed ? '--cached' : nil
+    git_diff = @git.lib.diff_name_status('HEAD', indexed_flag)
+    Changeset.new(
+      total: git_diff.length,
+      added: git_diff.select{|k,v| v == 'A'}.keys,
+      modified: git_diff.select{|k,v| v == 'M'}.keys,
+      deleted: git_diff.select{|k,v| v == 'D'}.keys
+    )
+  end
+
   def pull(remote: nil)
     if remote
       @git.pull @git.remote(remote)
@@ -46,10 +37,13 @@ class Yarii::Repository
     end
   end
 
-  def needs_pull?
-    @git.fetch(ENV['git_publish_remote'] || 'origin')
-    gitstatus = `cd "#{@repo_dir}";git status`
-    gitstatus.include? "branch is behind"
+  def needs_pull?(remote: nil)
+    if remote
+      @git.fetch @git.remote(remote)
+    else
+      @git.fetch
+    end
+    @git.lib.diff_name_status('HEAD','@{upstream}').length > 0
   end
 
   def commit(message:)
@@ -63,5 +57,4 @@ class Yarii::Repository
       @git.push
     end
   end
-
 end
