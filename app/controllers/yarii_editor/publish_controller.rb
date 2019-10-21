@@ -9,5 +9,16 @@ module YariiEditor
     def menu
       render partial: "yarii_editor/shared/publishing_menu", formats: [:html]
     end
+
+    def commit
+      render layout: nil
+    end
+
+    def push_commit
+      current_site.commit!(message: params[:commit_message])
+      current_site.push
+
+      render json: {status: 'ok'}
+    end
   end
 end

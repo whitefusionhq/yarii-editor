@@ -24,6 +24,9 @@ module YariiEditor
       else
         @doc = content_model.find(params[:id])
       end
+      if @doc.respond_to?(:published) and @doc.published.nil?
+        @doc.published = true
+      end
       render 'modal', layout: nil
     end
     
@@ -91,7 +94,7 @@ module YariiEditor
         if value.is_a?(String) and value.strip.blank?
           # Scrub blank string values
           params[params[:content_model].to_sym][variable.to_sym] = nil
-        elsif value.is_a?(String) and value.strip.match(/false|true/)
+        elsif value.is_a?(String) and value.strip.match(/^false|true$/)
           # Convert to real boolean values
           params[params[:content_model].to_sym][variable.to_sym] = params[params[:content_model].to_sym][variable.to_sym].strip == 'true'
         end

@@ -1,0 +1,45 @@
+<div
+  data-controller="commit-modal"
+  data-commit-modal-path="<%= yarii_editor.push_commit_publish_path %>"
+  data-commit-modal-publishing-menu-path="<%= yarii_editor.publishing_menu_path %>"
+  id="commit-modal"
+  class="modal is-active"
+>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Push Updates to Public</p>
+      <button data-action="commit-modal#cancel" class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <%= form_tag do %>
+        <div class="content">
+          <p>Describe the updates you're pushing to the public website. For example:</p>
+
+          <ul>
+            <li>New "Title Goes Here" blog post</li>
+            <li>Updated the pricing page</li>
+            <li>Deleted old event listing</li>
+            <li>Fixed typos on upcoming products</li>
+            <li>etc.</li>
+          </ul>
+
+          <p>This commit message will be stored in the version history for your website repository.</p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="commit_message">Commit Message:</label>
+          <div class="control">
+            <input class="input" type="text" name="commit_message" />
+          </div>
+        </div>
+      <% end %>
+    </section>
+    <footer class="modal-card-foot">
+      <div data-target="commit-modal.status" class="modal-foot-status"></div>
+      <button data-action="commit-modal#cancel" class="button is-dark is-text">Cancel</button>
+      &nbsp;
+      <button data-action="commit-modal#commit" class="button is-success">Push Updates</button>
+    </footer>
+  </div>
+</div>

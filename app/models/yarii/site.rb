@@ -27,6 +27,10 @@ module Yarii
       repository.commit(message: message)
     end
 
+    def push
+      repository.push
+    end
+
     def remote_is_up_to_date?
       # NOTE: the Jekyll site config needs to include .well-known in the list of
       # folders to build! Otherwise this won't work!

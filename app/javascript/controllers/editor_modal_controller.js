@@ -33,18 +33,13 @@ export default class extends Controller {
         response = await this.axios.post(savePath, data)
         const newCard = document.createElement('template')
         newCard.innerHTML = response.data.document_html
-        console.log("new card!", newCard)
         const list = document.getElementById('list-' + this.data.get('content-model'))
-        console.log("list!", list)
         list.prepend(newCard.content.cloneNode(true))
-
-        console.log("done!")
       } else if (httpMethod == 'put') {
         response = await this.axios.put(savePath, data)
         const updatedCard = response.data.document_html
         document.getElementById(this.data.get('content-model') + '-' + this.data.get('model-id')).outerHTML = updatedCard
       }
-      console.log('about to refresh')
       this.refreshPublishingMenu()
       this.closeModal()
     } catch (error) {
@@ -66,11 +61,9 @@ export default class extends Controller {
   }
 
   async refreshPublishingMenu() {
-    console.log("running the axios…")
     try {
       let response = null
       response = await this.axios.get(this.data.get('publishing-menu-path'))
-      console.log("got the axios!", response)
       document.getElementById('publishing-menu').innerHTML = response.data
     } catch (error) {
       console.log(error)

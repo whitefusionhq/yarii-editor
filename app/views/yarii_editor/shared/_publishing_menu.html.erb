@@ -3,13 +3,15 @@
   <span class="publishing-status">
     <% if current_site.repository.changes.total > 0 %>
       <span class="ml-2 tag is-danger">Updates</span>
+    <% elsif !current_site.remote_is_up_to_date? %>
+      <span data-controller="building" data-building-path="<%= yarii_editor.remote_is_up_to_date_path %>" class="ml-2 tag is-warning">Building…</span>
     <% end %>
   </span>
 </a>
 
 <div class="navbar-dropdown is-boxed">
   <% if current_site.repository.changes.total > 0 %>
-    <a href="javascript:void(0)" class="navbar-item is-size-6 has-text-weight-bold">
+    <a data-controller="push-to-public" data-action="push-to-public#open" href="<%= yarii_editor.commit_publish_path %>" class="navbar-item is-size-6 has-text-weight-bold">
       Push Updates to Public
     </a>
     <hr class="navbar-divider" />

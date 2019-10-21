@@ -103,6 +103,10 @@ img {
   &.tagged-published {
     border-top: 10px solid $green;
   }
+  &.dimmed {
+    opacity: 0.4;
+    pointer-events: none;
+  }
 
   .card-image {
     border-bottom: $card-header-border-bottom;

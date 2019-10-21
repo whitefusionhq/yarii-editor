@@ -23,15 +23,27 @@ export default class extends Controller {
   async destroy(event) {
     event.preventDefault()
     const deletePath = event.currentTarget.href
-    const cardId = event.currentTarget.dataset.cardId
+    const cardId = this.element.id
 
     if (confirm("Are you sure you wish to delete this item?")) {
+      this.element.classList.add('dimmed')
       try {
         await this.axios.delete(deletePath)
         document.getElementById(cardId).remove()
+        this.refreshPublishingMenu()
       } catch (error) {
         console.log(error)
       }
+    }
+  }
+
+  async refreshPublishingMenu() {
+    try {
+      let response = null
+      response = await this.axios.get(this.data.get('publishing-menu-path'))
+      document.getElementById('publishing-menu').innerHTML = response.data
+    } catch (error) {
+      console.log(error)
     }
   }
 }

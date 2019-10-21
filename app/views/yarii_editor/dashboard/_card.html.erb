@@ -1,3 +1,3 @@
-<div data-controller="card" id="<%= content_model_type %>-<%= model.id %>" class="card <%= "tagged-#{status_of_document(model)}" %>">
+<div data-controller="card" data-card-publishing-menu-path="<%= yarii_editor.publishing_menu_path %>" id="<%= content_model_type %>-<%= model.id %>" class="card <%= "tagged-#{status_of_document(model)}" %>">
   <%= render 'yarii_editor/model_cards/' + model_class.name.underscore, model: model, content_model_type: content_model_type %>
 </div>
