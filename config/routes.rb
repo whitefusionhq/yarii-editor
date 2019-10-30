@@ -11,5 +11,6 @@ YariiEditor::Engine.routes.draw do
   get 'publish/commit', to: 'publish#commit', as: 'commit_publish'
   post 'publish/push_commit', to: 'publish#push_commit', as: 'push_commit_publish'
 
+  get 'dashboard/list', to: 'dashboard#list', as: 'dashboard_list'
   root to: "dashboard#index"
 end

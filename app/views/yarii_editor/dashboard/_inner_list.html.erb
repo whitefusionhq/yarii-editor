@@ -1,0 +1,42 @@
+<%
+model_type = local_assigns[:model_type]
+model_details = local_assigns[:model_details]
+model_class = model_details[:class_name].constantize
+
+current_page = (params[:page] || 1).to_i
+pagination = 15
+page_start = pagination * (current_page - 1)
+page_end = pagination * current_page
+
+models = if model_details[:datafile]
+  model_class.all(model_details[:datafile])[page_start...page_end]
+else
+  order_by = model_details[:order_by] || :posted_datetime
+  order_direction = model_details[:order_direction] || :desc
+  if model_details[:filter] and model_details[:filter][:hashtags]
+    model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
+      if model.respond_to?(:tags) and model.tags.present?
+        tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
+        (tags & model_details[:filter][:hashtags]).present?
+      end
+    end[page_start...page_end]
+  elsif model_details[:filter] and model_details[:filter][:categories]
+    model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
+      categories = model.as_json['category'] || model.as_json['categories']
+      if categories.present?
+        categories = categories.is_a?(Array) ? categories : categories.split(' ')
+        (categories & model_details[:filter][:categories]).present?
+      end
+    end[page_start...page_end]
+  else
+    model_class.all(order_by: order_by, order_direction: order_direction)[page_start...page_end]
+  end
+end
+if models.present?
+  models.each do |model| %>
+    <%= render 'yarii_editor/dashboard/card', model_class: model_class, model: model, content_model_type: model_type %>
+<%
+  end
+else %>
+<p class="has-text-centered" data-list-done="true"><em>All done!</em></p>
+<% end %>

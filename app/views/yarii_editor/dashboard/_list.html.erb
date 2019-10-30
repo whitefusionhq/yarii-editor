@@ -1,8 +1,10 @@
 <%
-  model_type = local_assigns[:model_type]
-  model_details = local_assigns[:model_details]
-  model_class = model_details[:class_name].constantize
-  model_title = model_details.fetch(:title, model_class.name.titleize).pluralize
+model_type = local_assigns[:model_type]
+model_details = local_assigns[:model_details]
+model_class = model_details[:class_name].constantize
+model_title = model_details.fetch(:title, model_class.name.titleize).pluralize
+
+current_page = (params[:page] || 1).to_i
 %>
 <li class="scroll-item">
   <div class="level is-mobile">
@@ -18,34 +20,12 @@
   </div>
 
   <div class="vertical-scroll">
-  <div id="list-<%= model_type %>">
-    <% 
-    models = if model_details[:datafile]
-      model_class.all(model_details[:datafile])[0...20]
-    else
-      order_by = model_details[:order_by] || :posted_datetime
-      order_direction = model_details[:order_direction] || :desc
-      if model_details[:filter] and model_details[:filter][:hashtags]
-        model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
-          if model.respond_to?(:tags) and model.tags.present?
-            tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
-            (tags & model_details[:filter][:hashtags]).present?
-          end
-        end[0...20]
-      elsif model_details[:filter] and model_details[:filter][:categories]
-        model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
-          categories = model.as_json['category'] || model.as_json['categories']
-          if categories.present?
-            categories = categories.is_a?(Array) ? categories : categories.split(' ')
-            (categories & model_details[:filter][:categories]).present?
-          end
-        end[0...20]
-      else
-        model_class.all(order_by: order_by, order_direction: order_direction)[0...20]
-      end
-    end
-    models.each do |model| %>
-      <%= render 'yarii_editor/dashboard/card', model_class: model_class, model: model, content_model_type: model_type %>
-    <% end %>
+    <div id="list-<%= model_type %>">
+      <%= render 'inner_list', model_type: model_type, model_details: model_details %>
+
+      <div data-controller="list-loading" id="loadmore-<%= model_type %>" class="has-text-centered">
+        <%= link_to 'Load More', dashboard_list_path(model_type: model_type, page: current_page + 1), data: {action: 'list-loading#more'}, class: 'button is-primary' %>
+      </div>
+    </div>
   </div>
-</div></li>
+</li>
