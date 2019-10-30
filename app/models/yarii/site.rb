@@ -8,6 +8,22 @@ module Yarii
       @repository ||= Yarii::Repository.new(git_repo_path)
     end
 
+    def content_models
+      return @content_models if @content_models
+
+      yaml_path = File.join(git_repo_path, '.yarii', 'content_models.yml')
+      if (File.exist?(yaml_path))
+        @content_models = ::SafeYAML.load(File.open(yaml_path))
+        @content_models = @content_models[Rails.env]&.with_indifferent_access
+        if @content_models.nil?
+          raise "No content models were found for the #{Rails.env} environment"
+        end
+        @content_models
+      else
+        raise "No content models YAML file was found at #{yaml_path}"
+      end
+    end
+
     def update_status_before_commit!
       well_known_path = File.join(content_base_path, '.well-known')
       unless Dir.exist?(well_known_path)

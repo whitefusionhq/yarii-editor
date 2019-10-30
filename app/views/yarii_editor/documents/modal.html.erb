@@ -30,7 +30,7 @@
     </header>
     <section class="modal-card-body">
       <%= form_tag do %>
-        <% Rails.configuration.content_models[params[:content_model].to_sym][:primary_fields].each do |field| %>
+        <% current_site.content_models[params[:content_model].to_sym][:primary_fields].each do |field| %>
           <%= add_field field[:field_type], {
             variable: field[:field_name],
             label: field[:label],
@@ -48,7 +48,7 @@
               <%= check_box_tag "#{params[:content_model]}[published]", true, @doc.published %>
             </div>
           </div>
-          <% Rails.configuration.content_models[params[:content_model].to_sym][:additional_fields].each do |field| %>
+          <% current_site.content_models[params[:content_model].to_sym][:additional_fields].each do |field| %>
             <%= add_field field[:field_type], {
               variable: field[:field_name],
               label: field[:label],
@@ -58,7 +58,7 @@
           <% end %>
         </div>
 
-        <% Rails.configuration.content_models[params[:content_model].to_sym][:content_fields].each do |field| %>
+        <% current_site.content_models[params[:content_model].to_sym][:content_fields].each do |field| %>
           <%= add_field field[:field_type], {
             variable: field[:field_name],
             label: field[:label],

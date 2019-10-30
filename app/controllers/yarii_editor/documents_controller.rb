@@ -12,6 +12,10 @@ module YariiEditor
     def create
       @doc = content_model.new(secure_params)
       @doc.date = DateTime.current.iso8601
+      if @doc.respond_to? :process_controller_params
+        # Allow the content model to massage incoming data, if necessary
+        @doc.process_controller_params(self, params)
+      end
       @doc.save
 
       render json: {status: 'ok', document_html: rendered_card}
@@ -37,6 +41,10 @@ module YariiEditor
         @doc = content_model.find(params[:id])
       end
       @doc.assign_attributes(secure_params)
+      if @doc.respond_to? :process_controller_params
+        # Allow the content model to massage incoming data, if necessary
+        @doc.process_controller_params(self, params)
+      end
       @doc.save
 
       render json: {status: 'ok', document_html: rendered_card} 
@@ -56,16 +64,11 @@ module YariiEditor
     protected
     
     def content_model
-      Rails.
-        configuration.
-        content_models[params[:content_model].to_sym][:class_name].
-        constantize
+      current_site.content_models[params[:content_model]][:class_name].constantize
     end
 
     def model_title
-      model_details = Rails.
-        configuration.
-        content_models[params[:content_model].to_sym]
+      model_details = current_site.content_models[params[:content_model]]
       model_title = model_details.fetch(:title, model_details[:class_name].titleize)
     end
 
@@ -89,14 +92,26 @@ module YariiEditor
         end
       end
 
+      detect_integer = ->(str) {
+        begin
+          !!Integer(str)
+        rescue ArgumentError, TypeError
+          false
+        end
+      }
       variable_names.each do |variable|
         value = params[params[:content_model].to_sym][variable.to_sym]
-        if value.is_a?(String) and value.strip.blank?
-          # Scrub blank string values
-          params[params[:content_model].to_sym][variable.to_sym] = nil
-        elsif value.is_a?(String) and value.strip.match(/^false|true$/)
-          # Convert to real boolean values
-          params[params[:content_model].to_sym][variable.to_sym] = params[params[:content_model].to_sym][variable.to_sym].strip == 'true'
+        if value.is_a?(String)
+          if value.strip.blank?
+            # Scrub blank string values
+            params[params[:content_model].to_sym][variable.to_sym] = nil
+          elsif value.strip.match(/^false|true$/)
+            # Convert to real boolean values
+            params[params[:content_model].to_sym][variable.to_sym] = params[params[:content_model].to_sym][variable.to_sym].strip == 'true'
+          elsif detect_integer.call(value)
+            # Incoming strings that are simply numbers should be treated as such
+            params[params[:content_model].to_sym][variable.to_sym] = value.to_i 
+          end
         end
       end
 

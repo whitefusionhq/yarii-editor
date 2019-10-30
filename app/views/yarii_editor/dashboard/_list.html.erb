@@ -23,15 +23,17 @@
     models = if model_details[:datafile]
       model_class.all(model_details[:datafile])[0...20]
     else
+      order_by = model_details[:order_by] || :posted_datetime
+      order_direction = model_details[:order_direction] || :desc
       if model_details[:filter] and model_details[:filter][:hashtags]
-        model_class.all.select do |model|
+        model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
           if model.respond_to?(:tags) and model.tags.present?
             tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
             (tags & model_details[:filter][:hashtags]).present?
           end
         end[0...20]
       elsif model_details[:filter] and model_details[:filter][:categories]
-        model_class.all.select do |model|
+        model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
           categories = model.as_json['category'] || model.as_json['categories']
           if categories.present?
             categories = categories.is_a?(Array) ? categories : categories.split(' ')
@@ -39,7 +41,7 @@
           end
         end[0...20]
       else
-        model_class.all[0...20]
+        model_class.all(order_by: order_by, order_direction: order_direction)[0...20]
       end
     end
     models.each do |model| %>

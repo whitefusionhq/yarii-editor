@@ -41,7 +41,13 @@ ul.scroll {
 }
 
 .scroll-item {
-  flex: 0 0 32vw;
+  flex: 0 0 48vw;
+  @media (min-width: 1000px) {
+    flex: 0 0 32vw;
+  }
+  @media (min-width: 1600px) {
+    flex: 0 0 24vw;
+  }
   height: 100%;
   position: relative;
   .vertical-scroll {
@@ -94,6 +100,8 @@ img {
 .card {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  word-break: break-word;
+
   &.tagged-draft {
     border-top: 10px solid $orange;
   }
