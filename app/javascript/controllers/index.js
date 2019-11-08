@@ -9,30 +9,77 @@ const context = require.context("controllers", true, /_controller\.js$/)
 application.load(definitionsFromContext(context))
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  // Fixes body scrolling issues on iPad
+  setInterval(() => {
+    if (document.querySelector('.modal.is-active') == null && document.querySelector('html').scrollTop > 0) {
 
-// NOTHING WORKING HERE SO FAR
-
-function smoothScroll (node, left) {
-  document.body.scrollTo({'top': 0, behavior: 'smooth' })
-  return node.scrollTo({'left': left, behavior: 'smooth' })
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  window.scroller = document.querySelector('.scroll')
+      // scroll it!
+      scrollToY(0)
+//      document.querySelector('html').scrollTop = 0
+    }
+  }, 1000)
 })
 
-window.currentList = 0
-window.totalLists = 5
+// first add raf shim
+// http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
 
-function next() {
-  currentList += 1
+// main function
+function scrollToY(scrollTargetY, speed, easing) {
+    // scrollTargetY: the target scrollY property of the window
+    // speed: time in pixels per second
+    // easing: easing equation to use
 
-  scrollToLeft = Math.floor(window.scroller.scrollWidth * (window.currentList / window.totalLists)) 
-  smoothScroll(window.scroller, scrollToLeft)
-}
-function previous() {
-  currentList -= 1
+    var scrollY = window.scrollY || document.documentElement.scrollTop,
+        scrollTargetY = scrollTargetY || 0,
+        speed = speed || 2000,
+        easing = easing || 'easeOutSine',
+        currentTime = 0;
 
-  scrollToLeft = Math.floor(window.scroller.scrollWidth * (window.currentList / window.totalLists)) 
-  smoothScroll(window.scroller, scrollToLeft)
+    // min time .1, max time .8 seconds
+    var time = Math.max(.1, Math.min(Math.abs(scrollY - scrollTargetY) / speed, .8));
+
+    // easing equations from https://github.com/danro/easing-js/blob/master/easing.js
+    var easingEquations = {
+            easeOutSine: function (pos) {
+                return Math.sin(pos * (Math.PI / 2));
+            },
+            easeInOutSine: function (pos) {
+                return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+            },
+            easeInOutQuint: function (pos) {
+                if ((pos /= 0.5) < 1) {
+                    return 0.5 * Math.pow(pos, 5);
+                }
+                return 0.5 * (Math.pow((pos - 2), 5) + 2);
+            }
+        };
+
+    // add animation loop
+    function tick() {
+        currentTime += 1 / 60;
+
+        var p = currentTime / time;
+        var t = easingEquations[easing](p);
+
+        if (p < 1) {
+            requestAnimFrame(tick);
+
+            window.scrollTo(0, scrollY + ((scrollTargetY - scrollY) * t));
+        } else {
+            console.log('scroll done');
+            window.scrollTo(0, scrollTargetY);
+        }
+    }
+
+    // call it once to get started
+    tick();
 }

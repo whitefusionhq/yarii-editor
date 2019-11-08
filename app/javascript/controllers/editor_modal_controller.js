@@ -43,8 +43,12 @@ export default class extends Controller {
       this.refreshPublishingMenu()
       this.closeModal()
     } catch (error) {
+      this.element.querySelector('.modal-card-body > form').classList.remove('dimmed')
+      this.element.querySelector('button[data-action="editor-modal#save"]').classList.remove('is-loading')
+      this.statusTarget.classList.remove('in-progress')
+      this.statusTarget.innerHTML = ""
       alert("I'm sorry, I ran into trouble communicating with the server. Please copy your content to another text editor to preserve your work if this problem persists.")
-      console.log(error)
+      console.error(error)
     }
   }
 
