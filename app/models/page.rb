@@ -1,7 +1,5 @@
 class Page < ::ApplicationContentModel
-  variables :layout, :date, :title, :subtitle, :permalink
-
-  before_save :strip_layout
+  variables :layout, :date, :published, :title, :subtitle, :permalink
 
   def generate_new_file_path
     slug = if title
@@ -11,9 +9,5 @@ class Page < ::ApplicationContentModel
     end
 
     self.class.absolute_path("#{slug}.md")
-  end
-
-  def strip_layout
-    self.layout = nil if layout and layout.strip == ""
   end
 end

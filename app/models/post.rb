@@ -3,22 +3,11 @@ class Post < ::ApplicationContentModel
 
   variables :layout,
             :date,
+            :published,
             :category,
             :title,
             :subtitle,
-            :link_title,
-            :cloudinary_id,
-            :link_url,
-            :link_excerpt,
-            :tags,
-            :newsletter,
-            :original_source
-
-  before_save :strip_layout
-
-  def strip_layout
-    self.layout = nil if layout and layout.strip == ""
-  end
+            :tags
 
   def generate_new_file_path
     if use_date = date && date.to_datetime
