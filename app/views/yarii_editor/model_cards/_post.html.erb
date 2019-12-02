@@ -9,8 +9,7 @@
     <% if model.tags.present? %>
       <%= render 'yarii_editor/model_cards/hashtags', tags: model.tags %>
     <% end %>
-    <p class="has-text-right"><time datetime="<%= model.posted_datetime.strftime('%Y-%-m-%-d') %>"><%= model.posted_datetime.strftime('%B %-d, %Y') %></time> <small class="has-text-grey">/</small>
-    <small class="has-text-primary"><%= Base64::decode64 model.id %></small></p>
+    <p class="has-text-right"><time datetime="<%= model.posted_datetime.strftime('%Y-%-m-%-d') %>"><%= model.posted_datetime.strftime('%B %-d, %Y') %></time></p>
   </div>
 </div>
 <footer class="card-footer">

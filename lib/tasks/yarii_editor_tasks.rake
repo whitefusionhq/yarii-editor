@@ -27,10 +27,10 @@ namespace :yarii_editor do
         ensure_log_goes_to_stdout do
           if YariiEditor.webpacker.commands.compile
             # Successful compilation!
-            puts "Something worked!"
+            puts "🎉 Yarii::Editor Webpack compilation succeeded!"
           else
             # Failed compilation
-            puts "Something's wrong!"
+            puts "😟 Something went wrong with the Yarii::Editor Webpack compilation…"
             exit!
           end
         end
