@@ -1,5 +1,5 @@
 class Page < ::ApplicationContentModel
-  variables :layout, :date, :published, :title, :subtitle, :permalink
+  variables :layout, :date, :published, :title, :subtitle, :tags, :permalink
 
   def generate_new_file_path
     slug = if title

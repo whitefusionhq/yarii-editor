@@ -7,8 +7,8 @@ module YariiEditor
     end
 
     def check_if_yarii_is_authorized
-      current_user = ::CurrentUser.from_controller(self)
-      unless current_user&.can_access_yarii?
+      yarii_user = YariiEditor::CurrentUser.from_controller(self)
+      unless yarii_user&.can_access_yarii?
         raise YariiEditor::NotAuthorizedError
       end
     end

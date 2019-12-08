@@ -1,5 +1,6 @@
 require "yarii-editor/engine"
 require "yarii-editor/setup_current_site"
+require "yarii-editor/setup_current_user"
 
 class YariiEditor::Error < StandardError; end
 

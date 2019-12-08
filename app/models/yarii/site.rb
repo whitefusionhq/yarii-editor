@@ -59,5 +59,18 @@ module Yarii
         false
       end
     end
+
+    def preview_build_command
+      # TODO: make this configurable
+      'jekyll build -t --unpublished'
+    end
+
+    def build_preview
+      Bundler.with_clean_env do
+        trap('SIGINT') { exit }
+        puts "*** Building Preview Site: #{title}"
+        output = system("/bin/bash --login -c \"cd #{git_repo_path}; #{preview_build_command}\"")  
+      end
+    end
   end
 end

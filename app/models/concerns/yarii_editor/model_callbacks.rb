@@ -10,6 +10,7 @@ module YariiEditor
     def add_to_repository_index
       if persisted?
         CurrentSite.site&.repository&.add(file_path)
+        CurrentSite.site&.build_preview
       end
     end
 
@@ -18,6 +19,7 @@ module YariiEditor
         past_file_path = file_path
         yield
         CurrentSite.site&.repository&.remove(past_file_path)
+        CurrentSite.site&.build_preview
       end
     end
   end
