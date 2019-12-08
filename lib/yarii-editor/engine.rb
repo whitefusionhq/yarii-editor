@@ -16,5 +16,9 @@ module YariiEditor
         webpacker: YariiEditor.webpacker
       )
     end
+
+    initializer "yarii_editor.assets.precompile" do |app|
+      app.config.assets.precompile += %w( butterfly-small.png )
+    end
   end
 end
