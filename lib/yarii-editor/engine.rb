@@ -1,6 +1,12 @@
 module YariiEditor
   class Engine < ::Rails::Engine
     isolate_namespace YariiEditor
+    
+    config.to_prepare do
+      Dir.glob(Rails.root.join('app', 'decorators', '**', '*_decorator*.rb')).each do |c|
+        require_dependency(c)
+      end
+    end
 
     initializer "webpacker.proxy" do |app|
       insert_middleware = begin
