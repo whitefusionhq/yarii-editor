@@ -4,6 +4,8 @@ module YariiEditor
 
     included do
       before_action :check_if_yarii_is_authorized
+      
+      rescue_from YariiEditor::NotAuthorizedError, with: :handle_yarii_authorization_failure
     end
 
     def check_if_yarii_is_authorized
@@ -11,6 +13,10 @@ module YariiEditor
       unless yarii_user&.can_access_yarii?
         raise YariiEditor::NotAuthorizedError
       end
+    end
+    
+    def handle_yarii_authorization_failure
+      render plain: "503 Not Authorized", status: 503
     end
   end
 end
