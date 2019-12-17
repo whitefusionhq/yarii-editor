@@ -1,3 +1,5 @@
+require 'safe_yaml'
+
 module Yarii
   class Site < ApplicationRecord
     def self.table_name_prefix
