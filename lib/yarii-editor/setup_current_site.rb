@@ -6,6 +6,7 @@ module CurrentSite
       newSite = Yarii::Site.first
     end
     self.site = newSite
+    self.site.setup_content_model_variables
     Yarii::ContentModel.base_path = site.content_base_path
     Yarii::DatafileModel.base_path = site.content_base_path
     self.site

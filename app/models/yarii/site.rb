@@ -18,6 +18,9 @@ module Yarii
         if @content_models.nil?
           raise "No content models were found for the #{Rails.env} environment"
         end
+
+        setup_content_model_variables
+
         @content_models
       else
         raise "No content models YAML file was found at #{yaml_path}"
@@ -70,6 +73,20 @@ module Yarii
         trap('SIGINT') { exit }
         puts "*** Building Preview Site: #{title}"
         output = system("/bin/bash --login -c \"cd #{git_repo_path}; #{preview_build_command}\"")  
+      end
+    end
+
+    def setup_content_model_variables
+      content_models.values.each do |content_model|
+        model_class = Kernel.const_get(content_model['class_name'])
+        fields = [content_model['primary_fields'], content_model['additional_fields'], content_model['content_fields']].compact.flatten
+        fields.each do |field|
+          field_name = field['field_name'].to_sym
+          unless model_class.variable_names.include?(field_name) or field_name == :content
+            model_class.variable_names << field_name
+            model_class.attr_accessor(field_name)
+          end
+        end
       end
     end
   end
