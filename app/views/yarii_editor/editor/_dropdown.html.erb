@@ -1,0 +1,14 @@
+<%-
+  input_classes = ['input']
+  input_classes << className if local_assigns[:className]
+  name = name_from_variable(local_assigns)
+  value = value_from_variable(local_assigns)
+%>
+<div class="field">
+  <label class="label"><%= local_assigns[:label] %></label>
+  <div class="select">
+    <%= content_tag :select, nil, name: name, class: input_classes.join(' ') do %>
+      <% options_for_select @doc.send("values_for_#{variable}"), value %>
+    <% end %>
+  </div>
+</div>
