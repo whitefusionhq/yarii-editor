@@ -7,7 +7,11 @@ module YariiEditor
     before_action :set_content_model_base_path
 
     def set_content_model_base_path
-      CurrentSite.setup
+      if session[:current_yarii_site]
+        CurrentSite.setup(Yarii::Site.find(session[:current_yarii_site]))
+      else
+        CurrentSite.setup
+      end
     end
 
     def current_site
