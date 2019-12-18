@@ -5,7 +5,7 @@
 </header>
 <div class="card-content">
   <div class="content">
-    <p><%= model.subtitle || model.content.truncate(250) %></p>
+    <p><%= model.subtitle || model.content&.truncate(250) %></p>
     <% if model.tags.present? %>
       <%= render 'yarii_editor/model_cards/hashtags', tags: model.tags %>
     <% end %>
