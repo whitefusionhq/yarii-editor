@@ -50,6 +50,15 @@ module Yarii
 
     def push
       repository.push
+
+      post_push_path = File.join(git_repo_path, '.git', 'hooks', 'post-push')
+      if File.exist?(post_push_path)
+        Bundler.with_clean_env do
+          trap('SIGINT') { exit }
+          puts "*** Executing post push hook"
+          output = system("/bin/bash --login -c \"cd #{git_repo_path}; #{post_push_path}\"")  
+        end
+      end
     end
 
     def remote_is_up_to_date?
