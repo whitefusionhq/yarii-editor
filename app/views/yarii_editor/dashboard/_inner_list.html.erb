@@ -11,8 +11,8 @@ page_end = pagination * current_page
 models = if model_details[:datafile]
   model_class.all(model_details[:datafile])[page_start...page_end]
 else
-  order_by = model_details[:order_by] || :posted_datetime
-  order_direction = model_details[:order_direction] || :desc
+  order_by = model_details[:order_by]&.to_sym || :posted_datetime
+  order_direction = model_details[:order_direction]&.to_sym || :desc
   if model_details[:filter] and model_details[:filter][:hashtags]
     model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
       if model.respond_to?(:tags) and model.tags.present?
