@@ -85,12 +85,13 @@ module YariiEditor
     end
 
     def secure_params
+      content_model_param = params[:content_model].to_sym
       variable_names = content_model.variable_names + [:content]
 
       variable_names = variable_names.map do |variable|
-        if params[params[:content_model].to_sym][variable.to_sym].is_a? Array
+        if params[content_model_param][variable.to_sym].is_a? Array
           # scrub empty values
-          params[params[:content_model].to_sym][variable.to_sym] = params[params[:content_model].to_sym][variable.to_sym].select do |value|
+          params[content_model_param][variable.to_sym] = params[content_model_param][variable.to_sym].select do |value|
             value.present?
           end
           # permit the array variable
@@ -108,30 +109,33 @@ module YariiEditor
         end
       }
       variable_names.each do |variable|
-        value = params[params[:content_model].to_sym][variable.to_sym]
+        value = variable.is_a?(Hash) ?
+          params[content_model_param][variable.keys.first.to_sym] :
+          params[content_model_param][variable.to_sym]
+
         if value.is_a?(String)
           if value.strip.blank?
             # Scrub blank string values
-            params[params[:content_model].to_sym][variable.to_sym] = nil
+            params[content_model_param][variable.to_sym] = nil
           elsif value.strip.match(/^false|true$/)
             # Convert to real boolean values
-            params[params[:content_model].to_sym][variable.to_sym] = params[params[:content_model].to_sym][variable.to_sym].strip == 'true'
+            params[content_model_param][variable.to_sym] = params[content_model_param][variable.to_sym].strip == 'true'
           elsif detect_integer.call(value)
             # Incoming strings that are simply numbers should be treated as such
-            params[params[:content_model].to_sym][variable.to_sym] = value.to_i 
+            params[content_model_param][variable.to_sym] = value.to_i 
           end
         end
       end
 
       # Markdown editor adds carriage returns for some reason. Take them out!
-      if params[params[:content_model].to_sym][:content]
-        params[params[:content_model].to_sym][:content] = params[params[:content_model].to_sym][:content].gsub(/\r/, '')
+      if params[content_model_param][:content]
+        params[content_model_param][:content] = params[content_model_param][:content].gsub(/\r/, '')
       end
-      if params[params[:content_model].to_sym][:link_excerpt]
-        params[params[:content_model].to_sym][:link_excerpt] = params[params[:content_model].to_sym][:link_excerpt].gsub(/\r/, '')
+      if params[content_model_param][:link_excerpt]
+        params[content_model_param][:link_excerpt] = params[content_model_param][:link_excerpt].gsub(/\r/, '')
       end
 
-      params.require(params[:content_model].to_sym).permit(*variable_names)
+      params.require(content_model_param).permit(*variable_names)
     end
   end
 end
