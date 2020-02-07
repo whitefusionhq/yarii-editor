@@ -4,7 +4,15 @@ module YariiEditor
 
     def new
       @doc_heading = "New #{model_title}"
-      @doc = content_model.new
+      if params[:copy_from_template]
+        template_file_path = content_model.sanitize_filepath(File.join(current_site.git_repo_path, ".yarii", "templates", params[:copy_from_template]))
+        template_doc = content_model.new(file_path: template_file_path)
+        template_doc.load_file_from_path
+        @doc = template_doc.dup
+        @doc.file_path = nil
+      else
+        @doc = content_model.new
+      end
       @doc.published = true # default to adding to public publishing
       render 'modal', layout: nil
     end
