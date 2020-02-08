@@ -14,6 +14,9 @@ module YariiEditor
         @doc = content_model.new
       end
       @doc.published = true # default to adding to public publishing
+      if @doc.respond_to? :setup_default_values
+        @doc.setup_default_values(self, params)
+      end
       render 'modal', layout: nil
     end
 
@@ -38,6 +41,9 @@ module YariiEditor
       end
       if @doc.respond_to?(:published) and @doc.published.nil?
         @doc.published = true
+      end
+      if @doc.respond_to? :setup_default_values
+        @doc.setup_default_values(self, params)
       end
       render 'modal', layout: nil
     end
