@@ -36,7 +36,7 @@ class Yarii::Repository
   end
 
   def needs_pull?(remote: nil)
-    @git.fetch(@remote || remote, @branch)
+    @git.fetch(@remote || remote)
     @git.lib.diff_name_status('HEAD','@{upstream}').length > 0
   end
 
