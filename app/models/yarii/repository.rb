@@ -1,13 +1,15 @@
 require 'git'
 
 class Yarii::Repository
-  attr_accessor :repo_dir, :git
+  attr_accessor :repo_dir, :git, :remote, :branch
 
   Changeset = Struct.new(:total, :added, :modified, :deleted, keyword_init: true)
 
   def initialize(repo_dir)
     @repo_dir = repo_dir
     @git = Git.open(@repo_dir)
+    @remote = "origin"
+    @branch = @git.current_branch
   end
 
   def add(filepath)
@@ -30,19 +32,11 @@ class Yarii::Repository
   end
 
   def pull(remote: nil)
-    if remote
-      @git.pull @git.remote(remote)
-    else
-      @git.pull
-    end
+    @git.pull(@remote || remote, @branch)
   end
 
   def needs_pull?(remote: nil)
-    if remote
-      @git.fetch @git.remote(remote)
-    else
-      @git.fetch
-    end
+    @git.fetch(@remote || remote, @branch)
     @git.lib.diff_name_status('HEAD','@{upstream}').length > 0
   end
 
@@ -51,10 +45,6 @@ class Yarii::Repository
   end
 
   def push(remote: nil)
-    if remote
-      @git.push @git.remote(remote)
-    else
-      @git.push
-    end
+    @git.push(@remote || remote, @branch)
   end
 end
