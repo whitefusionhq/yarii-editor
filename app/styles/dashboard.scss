@@ -127,8 +127,13 @@ img {
 
 @supports (scroll-snap-align: start) {
   /* modern scroll snap points */
+  /* proximity on multiple columns in a viewport works better
+     in Firefox… */
   .scroll {
     scroll-snap-type: x mandatory;
+    @media (min-width: 601px) {
+      scroll-snap-type: x proximity;
+    }
   }
   .scroll-item {
     scroll-snap-align: center;
