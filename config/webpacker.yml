@@ -86,29 +86,15 @@ test:
 
 staging:
   <<: *default
-  compile: true
 
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  check_yarn_integrity: true
+  # Staging, like Production, depends on precompilation of packs prior to booting for performance.
+  compile: false
 
-  # Reference: https://webpack.js.org/configuration/dev-server/
-  dev_server:
-    https: false
-    host: localhost
-    port: 3045
-    public: yarii-wpkr.whitefusion.design
-    hmr: false
-    # Inline should be set to true if using HMR
-    inline: true
-    overlay: true
-    compress: true
-    disable_host_check: true
-    use_local_ip: false
-    quiet: false
-    headers:
-      'Access-Control-Allow-Origin': '*'
-    watch_options:
-      ignored: '**/node_modules/**'
+  # Extract and emit a css file
+  extract_css: true
+
+  # Cache manifest.json for performance
+  cache_manifest: true
 
 production:
   <<: *default
