@@ -13,7 +13,9 @@ $lightblue: #c9e3ff;
 $green: #43AA8B;
 $darkgreen: #254441;
 $lightgreen: rgb(211, 237, 221);
-$beige-light: #B2B09B;
+$beige-lighter: #dddbc4;
+$beige-light: #d1cfba;
+$beige-medium: #b6b394;
 $beige-dark: #42403B;
 $beige-darker: #363430;
 $yellow: rgb(255, 251, 241);
@@ -112,8 +114,10 @@ $radius-large: 10px;
   }
 }
 
-.button, .card-footer {
-//  font-weight: bold;
+.button {
+  &.is-primary:not(.is-outlined), &.is-success:not(.is-outlined) {
+    box-shadow: 2px 3px 3px rgba(0,0,0,0.1), -2px -3px 6px rgba(255,255,255,0.12);
+  }
 }
 
 .card-footer {

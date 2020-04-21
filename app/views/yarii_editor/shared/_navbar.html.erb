@@ -21,8 +21,17 @@
       </div>
     </div>
     <div class="navbar-end">
-      <div class="navbar-item">
-        <span style="font-weight:bold"><%= current_site.title %></span>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a href="javascript:void(0);" class="navbar-link">
+          <span style="font-weight:bold"><%= current_site.title %></span>
+        </a>
+        <div class="navbar-dropdown is-boxed is-right">
+          <a href="javascript:alert('To Be Implemented…')" class="navbar-item">
+            Site Settings
+          </a>
+          <hr class="navbar-divider" />
+          <%= link_to "Sign Out", main_app.signout_path, class: "navbar-item", method: :delete %>
+        </div>
       </div>
     </div>
   </div>

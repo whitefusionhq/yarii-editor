@@ -1,6 +1,8 @@
 module YariiEditor
   class Engine < ::Rails::Engine
     isolate_namespace YariiEditor
+
+    ROOT_PATH = Pathname.new(File.join(__dir__, "..", ".."))
     
     config.to_prepare do
       Dir.glob(Rails.root.join('app', 'decorators', '**', '*_decorator*.rb')).each do |c|
@@ -8,20 +10,10 @@ module YariiEditor
       end
     end
 
-    initializer "webpacker.proxy" do |app|
-      insert_middleware = begin
-        YariiEditor.webpacker.config.dev_server.present?
-      rescue
-        nil
-      end
-      next unless insert_middleware
-
-      app.middleware.insert_before(
-        0, Webpacker::DevServerProxy, # "Webpacker::DevServerProxy" if Rails version < 5
-        ssl_verify_none: true,
-        webpacker: YariiEditor.webpacker
-      )
-    end
+    config.app_middleware.use(
+      Rack::Static,
+      urls: ["/yarii-editor-packs"], root: ROOT_PATH.join("public")
+    )
 
     initializer "yarii_editor.assets.precompile" do |app|
       app.config.assets.precompile += %w( butterfly-small.png )

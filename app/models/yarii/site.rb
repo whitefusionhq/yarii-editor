@@ -56,7 +56,7 @@ module Yarii
         Bundler.with_clean_env do
           trap('SIGINT') { exit }
           puts "*** Executing post push hook"
-          output = system("/bin/bash --login -c \"cd #{git_repo_path}; #{post_push_path}\"")  
+          output = system("#{ENV["SHELL"]} --login -c \"cd #{git_repo_path} && #{post_push_path}\"")  
         end
       end
     end
@@ -75,15 +75,18 @@ module Yarii
     end
 
     def preview_build_command
-      # TODO: make this configurable
-      'jekyll build -t --unpublished'
+      if "preview_build_command".in?(self.class.columns.map(&:name))
+        attributes["preview_build_command"]
+      else
+        'bundle exec jekyll build --unpublished'
+      end
     end
 
     def build_preview
       Bundler.with_clean_env do
         trap('SIGINT') { exit }
         puts "*** Building Preview Site: #{title}"
-        output = system("/bin/bash --login -c \"cd #{git_repo_path}; #{preview_build_command}\"")  
+        output = system("#{ENV["SHELL"]} --login -c \"cd #{git_repo_path} && #{preview_build_command}\"")  
       end
     end
 
