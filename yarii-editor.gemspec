@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.description = spec.summary
   spec.license     = "MIT"
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
+  spec.files = Dir["{app,bin,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency "rails", "~> 6.0.0"
   spec.add_dependency "webpacker", "~> 4.0"
