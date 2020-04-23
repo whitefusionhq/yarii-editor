@@ -95,6 +95,8 @@ module Yarii
         model_class = Kernel.const_get(content_model['class_name'])
         fields = [content_model['primary_fields'], content_model['additional_fields'], content_model['content_fields']].compact.flatten
         fields.each do |field|
+          next if field['custom_method']
+
           field_name = field['field_name'].to_sym
           unless model_class.variable_names.include?(field_name) or field_name == :content
             model_class.variable_names << field_name
