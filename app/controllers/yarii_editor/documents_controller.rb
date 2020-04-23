@@ -22,7 +22,7 @@ module YariiEditor
 
     def create
       @doc = content_model.new(secure_params)
-      @doc.date = DateTime.current.iso8601
+      @doc.date = DateTime.current.iso8601 unless valid_date?
       if @doc.respond_to? :process_controller_params
         # Allow the content model to massage incoming data, if necessary
         @doc.process_controller_params(self, params)
@@ -142,6 +142,13 @@ module YariiEditor
       end
 
       params.require(content_model_param).permit(*variable_names)
+    end
+
+    def valid_date?
+      begin
+        @doc.date&.to_datetime.is_a?(DateTime)
+      rescue ArgumentError
+      end
     end
   end
 end
