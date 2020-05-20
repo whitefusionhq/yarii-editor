@@ -75,8 +75,8 @@ $modal-card-head-padding: 14px 20px 15px;
 $modal-card-foot-background-color: $dark;
 $modal-content-width: 800px;
 $modal-card-body-background-color: $card-header-background-color;
-$modal-card-title-color: lighten($beige-lighter, 10%);
-$modal-card-title-size: 1.5em;
+$modal-card-title-color: transparentize(white, 0.15);
+$modal-card-title-size: 1.4em;
 .modal-card-title {
   font-family: $card-header-family;
 }
