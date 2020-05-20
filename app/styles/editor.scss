@@ -37,7 +37,7 @@
     color: $green;
   }
   .cm-strong, .cm-em {
-    color: $darkgreen;
+    color: desaturate(darken($darkorange, 20%), 15%);
   }
   .cm-link, .cm-url {
     color: $darkorange;

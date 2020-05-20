@@ -51,7 +51,7 @@ $button-border-width: 0;
 $card-shadow: 0 0px 3px rgba(10, 10, 10, 0.2);
 $card-header-shadow: none;
 $card-content-padding: 0.9rem 0.8rem 0.8rem;
-$card-header-color: $darkorange;
+$card-header-color: darken($text, 2%);
 $card-header-family: $family-serif;
 $card-header-weight: 400;
 $card-header-background-color: #fafaf6;
@@ -62,6 +62,7 @@ $card-header-border-bottom: 1px solid darken($card-header-background-color, 7%);
   line-height: 1.15;
   border-bottom: $card-header-border-bottom;
 }
+$card-color: lighten($beige-dark, 10%);
 $card-footer-border-top: $card-header-border-bottom;
 $card-footer-background-color: $card-header-background-color;
 $card-footer-padding: 0.5rem;
@@ -70,11 +71,12 @@ $card-footer-padding: 0.5rem;
 }
 
 $modal-card-head-background-color: $dark;
+$modal-card-head-padding: 14px 20px 15px;
 $modal-card-foot-background-color: $dark;
 $modal-content-width: 800px;
 $modal-card-body-background-color: $card-header-background-color;
-$modal-card-title-color: $orange;
-$modal-card-title-size: 1.75em;
+$modal-card-title-color: lighten($beige-lighter, 10%);
+$modal-card-title-size: 1.5em;
 .modal-card-title {
   font-family: $card-header-family;
 }
