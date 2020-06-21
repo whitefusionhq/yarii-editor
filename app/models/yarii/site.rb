@@ -17,7 +17,7 @@ module Yarii
     def content_models
       return @content_models if @content_models
 
-      yaml_path = File.join(git_repo_path, '.yarii', 'content_models.yml')
+      yaml_path = Pathname.new(content_base_path).parent.join('.yarii', 'content_models.yml')
       if (File.exist?(yaml_path))
         @content_models = ContentModels.new(self, yaml_path)
       else
