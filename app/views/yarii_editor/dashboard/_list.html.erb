@@ -1,10 +1,11 @@
 <%
 model_type = local_assigns[:model_type]
 model_details = local_assigns[:model_details]
-model_class = model_details[:class_name].constantize
+model_class = model_details[:klass]
 model_title = model_details.fetch(:title, model_class.name.titleize).pluralize
 
 current_page = (params[:page] || 1).to_i
+@inner_list_done = false
 %>
 <li class="scroll-item">
   <div class="level is-mobile">
@@ -23,12 +24,14 @@ current_page = (params[:page] || 1).to_i
     <div id="list-<%= model_type %>">
       <%= render 'inner_list', model_type: model_type, model_details: model_details %>
 
-      <div data-controller="list-loading" id="loadmore-<%= model_type %>" class="has-text-centered">
-        <%= link_to dashboard_list_path(model_type: model_type, page: current_page + 1), data: {action: 'list-loading#more'}, class: 'button is-primary' do %>
-          <span>Load More</span>
-          <span class="icon"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></span>
-        <% end %>
-      </div>
+      <% unless @inner_list_done %>
+        <div data-controller="list-loading" id="loadmore-<%= model_type %>" class="has-text-centered">
+          <%= link_to dashboard_list_path(model_type: model_type, page: current_page + 1), data: {action: 'list-loading#more'}, class: 'button is-primary' do %>
+            <span>Load More</span>
+            <span class="icon"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></span>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </li>

@@ -9,14 +9,14 @@ module YariiEditor
 
     def add_to_repository_index
       if persisted?
-        CurrentSite.site&.repository&.add(file_path)
+        CurrentSite.site&.repository&.add(absolute_path_in_source_dir)
         CurrentSite.site&.build_preview
       end
     end
 
     def remove_from_repository
       if persisted?
-        past_file_path = file_path
+        past_file_path = absolute_path_in_source_dir
         yield
         CurrentSite.site&.repository&.remove(past_file_path)
         CurrentSite.site&.build_preview

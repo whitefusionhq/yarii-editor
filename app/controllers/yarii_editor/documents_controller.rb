@@ -5,13 +5,14 @@ module YariiEditor
     def new
       @doc_heading = "New #{model_title}"
       if params[:copy_from_template]
+        # TODO: refactor this!
         template_file_path = content_model.sanitize_filepath(File.join(current_site.git_repo_path, ".yarii", "templates", params[:copy_from_template]))
         template_doc = content_model.new(file_path: template_file_path)
         template_doc.load_file_from_path
         @doc = template_doc.dup
         @doc.file_path = nil
       else
-        @doc = content_model.new
+        @doc = content_model.new_via_label(params[:content_model], site: current_site.bridgetown)
       end
       @doc.published = true # default to adding to public publishing
       if @doc.respond_to? :setup_default_values
@@ -21,13 +22,23 @@ module YariiEditor
     end
 
     def create
-      @doc = content_model.new(secure_params)
+      @doc = content_model.new_via_label(params[:content_model], site: current_site.bridgetown)
+      @doc.assign_attributes(secure_params)
       @doc.date = DateTime.current.iso8601 unless valid_date?
       if @doc.respond_to? :process_controller_params
         # Allow the content model to massage incoming data, if necessary
         @doc.process_controller_params(self, params)
       end
       @doc.save
+
+      # Reload
+      current_site.bridgetown.reset
+      current_site.bridgetown.read
+      @doc = content_model.find(
+        @doc.id,
+        label: params[:content_model],
+        site: current_site.bridgetown
+      )
 
       render json: {status: 'ok', document_html: rendered_card}
     end
@@ -37,7 +48,11 @@ module YariiEditor
       if params[:key_path]
         @doc = content_model.find(params[:id], params[:key_path])
       else
-        @doc = content_model.find(params[:id])
+        @doc = content_model.find(
+          params[:id],
+          label: params[:content_model],
+          site: current_site.bridgetown
+        )
       end
       if @doc.respond_to?(:published) and @doc.published.nil?
         @doc.published = true
@@ -52,7 +67,11 @@ module YariiEditor
       if params[:key_path]
         @doc = content_model.find(params[:id], params[:key_path])
       else
-        @doc = content_model.find(params[:id])
+        @doc = content_model.find(
+          params[:id],
+          label: params[:content_model],
+          site: current_site.bridgetown
+        )
       end
       @doc.assign_attributes(secure_params)
       if @doc.respond_to? :process_controller_params
@@ -61,6 +80,15 @@ module YariiEditor
       end
       @doc.save
 
+      # Reload
+      current_site.bridgetown.reset
+      current_site.bridgetown.read
+      @doc = content_model.find(
+        @doc.id,
+        label: params[:content_model],
+        site: current_site.bridgetown
+      )
+
       render json: {status: 'ok', document_html: rendered_card} 
     end
 
@@ -68,7 +96,11 @@ module YariiEditor
       if params[:key_path]
         @doc = content_model.find(params[:id], params[:key_path])
       else
-        @doc = content_model.find(params[:id])
+        @doc = content_model.find(
+          params[:id],
+          label: params[:content_model],
+          site: current_site.bridgetown
+        )
       end
       @doc.destroy
 
@@ -78,11 +110,11 @@ module YariiEditor
     protected
     
     def content_model
-      current_site.content_models[params[:content_model]][:class_name].constantize
+      current_site.content_models.schema_for_type(params[:content_model])[:klass]
     end
 
     def model_title
-      model_details = current_site.content_models[params[:content_model]]
+      model_details = current_site.content_models.schema_for_type(params[:content_model])
       model_title = model_details.fetch(:title, model_details[:class_name].titleize)
     end
 
@@ -91,13 +123,13 @@ module YariiEditor
     end
 
     def secure_params
+      variable_names = current_site.content_models.field_names_for_schema(params[:content_model])
       content_model_param = params[:content_model].to_sym
-      variable_names = content_model.variable_names + [:content]
 
       variable_names = variable_names.map do |variable|
-        if params[content_model_param][variable.to_sym].is_a? Array
+        if params[content_model_param][variable].is_a? Array
           # scrub empty values
-          params[content_model_param][variable.to_sym] = params[content_model_param][variable.to_sym].select do |value|
+          params[content_model_param][variable] = params[content_model_param][variable].select do |value|
             value.present?
           end
           # permit the array variable
@@ -117,18 +149,18 @@ module YariiEditor
       variable_names.each do |variable|
         value = variable.is_a?(Hash) ?
           params[content_model_param][variable.keys.first.to_sym] :
-          params[content_model_param][variable.to_sym]
+          params[content_model_param][variable]
 
         if value.is_a?(String)
           if value.strip.blank?
             # Scrub blank string values
-            params[content_model_param][variable.to_sym] = nil
+            params[content_model_param][variable] = nil
           elsif value.strip.match(/^false|true$/)
             # Convert to real boolean values
-            params[content_model_param][variable.to_sym] = params[content_model_param][variable.to_sym].strip == 'true'
+            params[content_model_param][variable] = params[content_model_param][variable].strip == 'true'
           elsif detect_integer.call(value)
             # Incoming strings that are simply numbers should be treated as such
-            params[content_model_param][variable.to_sym] = value.to_i 
+            params[content_model_param][variable] = value.to_i 
           end
         end
       end

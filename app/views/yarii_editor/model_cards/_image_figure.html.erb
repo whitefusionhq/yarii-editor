@@ -1,0 +1,7 @@
+<% if model.image.present? %>
+  <div class="card-image">
+    <figure class="image is-2by1">
+      <%= image_tag model.image, style: "object-fit:cover" %>
+    </figure>
+  </div>
+<% end %>
