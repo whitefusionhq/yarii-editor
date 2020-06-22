@@ -1,9 +1,13 @@
-require 'safe_yaml'
-
 module Yarii
   class Site < ApplicationRecord
     def self.table_name_prefix
       'yarii_'
+    end
+
+    def bridgetown
+      @bridgetown ||= Dir.chdir(Pathname.new(content_base_path).parent) do
+        Bridgetown::Site.setup_and_read(limit_posts: 0, unpublished: true, future: true)
+      end
     end
 
     def repository
@@ -13,17 +17,9 @@ module Yarii
     def content_models
       return @content_models if @content_models
 
-      yaml_path = File.join(git_repo_path, '.yarii', 'content_models.yml')
+      yaml_path = Pathname.new(content_base_path).parent.join('.yarii', 'content_models.yml')
       if (File.exist?(yaml_path))
-        @content_models = ::SafeYAML.load(File.open(yaml_path))
-        @content_models = @content_models[Rails.env]&.with_indifferent_access
-        if @content_models.nil?
-          raise "No content models were found for the #{Rails.env} environment"
-        end
-
-        setup_content_model_variables
-
-        @content_models
+        @content_models = ContentModels.new(self, yaml_path)
       else
         raise "No content models YAML file was found at #{yaml_path}"
       end
@@ -89,19 +85,15 @@ module Yarii
         output = system("#{ENV["SHELL"]} --login -c \"cd #{git_repo_path} && #{preview_build_command}\"")  
       end
     end
+  end
+end
 
-    def setup_content_model_variables
-      content_models.values.each do |content_model|
-        model_class = Kernel.const_get(content_model['class_name'])
-        fields = [content_model['primary_fields'], content_model['additional_fields'], content_model['content_fields']].compact.flatten
-        fields.each do |field|
-          field_name = field['field_name'].to_sym
-          unless model_class.variable_names.include?(field_name) or field_name == :content
-            model_class.variable_names << field_name
-            model_class.attr_accessor(field_name) unless field['custom_method']
-          end
-        end
-      end
-    end
+Bridgetown::ContentModel.class_eval do
+  include YariiEditor::ModelCallbacks
+
+  def will_be_published?
+    return false if respond_to?(:published) and published === false
+    return false if respond_to?(:draft) and draft
+    true
   end
 end

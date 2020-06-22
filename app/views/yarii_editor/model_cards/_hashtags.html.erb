@@ -1,5 +1,5 @@
 <p class="tags">
-  <% tags.split(' ').each do |tag| %>
+  <% (tags.is_a?(Array) ? tags : tags.split(' ')).each do |tag| %>
     <span class="tag is-medium is-rounded is-success">#<%= tag %></span>
   <% end %>
 </p>

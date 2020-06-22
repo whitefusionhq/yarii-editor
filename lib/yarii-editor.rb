@@ -22,3 +22,8 @@ end
 
 module Yarii
 end
+
+# Fix crash if deprecated gem isn't loaded
+if !Kernel.const_defined?("Yarii::DatafileModel")
+  class Yarii::DatafileModel; end
+end

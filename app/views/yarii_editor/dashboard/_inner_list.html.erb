@@ -4,39 +4,49 @@ model_details = local_assigns[:model_details]
 model_class = model_details[:class_name].constantize
 
 current_page = (params[:page] || 1).to_i
-pagination = 15
+pagination = Rails.configuration.x.yarii_pagination_size.presence || 10
 page_start = pagination * (current_page - 1)
 page_end = pagination * current_page
 
-models = if model_details[:datafile]
-  model_class.all(model_details[:datafile])[page_start...page_end]
+all_models = if model_details[:datafile]
+  # Deprecated
+  model_class.all(model_details[:datafile])
 else
-  order_by = model_details[:order_by]&.to_sym || :posted_datetime
-  order_direction = model_details[:order_direction]&.to_sym || :desc
+  order_by = model_details[:order_by] || :posted_datetime
+  order_direction = model_details[:order_direction] || :desc
   if model_details[:filter] and model_details[:filter][:hashtags]
-    model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
+    Bridgetown::ContentModel.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction).select do |model|
       if model.respond_to?(:tags) and model.tags.present?
         tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
         (tags & model_details[:filter][:hashtags]).present?
       end
-    end[page_start...page_end]
+    end
   elsif model_details[:filter] and model_details[:filter][:categories]
-    model_class.all(order_by: order_by, order_direction: order_direction).select do |model|
+    Bridgetown::ContentModel.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction).select do |model|
       categories = model.as_json['category'] || model.as_json['categories']
       if categories.present?
         categories = categories.is_a?(Array) ? categories : categories.split(' ')
         (categories & model_details[:filter][:categories]).present?
       end
-    end[page_start...page_end]
+    end
   else
-    model_class.all(order_by: order_by, order_direction: order_direction)[page_start...page_end]
+    Bridgetown::ContentModel.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction)
   end
 end
+
+models = all_models[page_start...page_end]
 if models.present?
   models.each do |model| %>
     <%= render 'yarii_editor/dashboard/card', model_class: model_class, model: model, content_model_type: model_type %>
 <%
+    if models.length == all_models.length
+      @inner_list_done = true
+    end
   end
+
+  if models.length != all_models.length && models.last == all_models.last %>
+    <p class="has-text-centered mt-10" data-list-done="true"><em>Finis.</em></p>
+  <% end
 else %>
-<p class="has-text-centered" data-list-done="true"><em>All done!</em></p>
+<p class="has-text-centered mt-10" data-list-done="true"><em>Finis.</em></p>
 <% end %>

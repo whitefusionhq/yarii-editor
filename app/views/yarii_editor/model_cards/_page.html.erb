@@ -1,11 +1,13 @@
+<% schema = current_site.content_models.schema_for_type(content_model_type) -%>
 <header class="card-header">
   <p class="card-header-title">
-    <%= model.title %>
+    <%= model.send(schema.fetch(:card_title_field, :title)) || model.url %>
   </p>
 </header>
+<%= render "yarii_editor/model_cards/image_figure", model: model, content_model_type: content_model_type %>
 <div class="card-content">
   <div class="content">
-    <p><%= model.subtitle || model.content&.truncate(250) %></p>
+    <p><%= model.send(schema.fetch(:card_description_field, :subtitle)) || model.content&.truncate(250) %></p>
     <% if model.tags.present? %>
       <%= render 'yarii_editor/model_cards/hashtags', tags: model.tags %>
     <% end %>

@@ -1,0 +1,10 @@
+<%
+schema = current_site.content_models.schema_for_type(content_model_type)
+model_image = model.send(schema.fetch(:card_image_field, :image))
+if model_image.present? -%>
+  <div class="card-image">
+    <figure class="image is-2by1">
+      <img src="<%= model_image %>" style="object-fit:cover" />
+    </figure>
+  </div>
+<% end -%>
