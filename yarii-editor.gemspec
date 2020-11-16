@@ -9,14 +9,15 @@ Gem::Specification.new do |spec|
   spec.version     = YariiEditor::VERSION
   spec.authors     = ["Jared White"]
   spec.email       = ["jared@jaredwhite.com"]
-  spec.homepage    = "https://whitefusion.io"
-  spec.summary     = "Provides a editing admin interface to any Rails app for handling static content (aka Jekyll)"
+  spec.homepage    = "https://github.com/whitefusionhq/yarii-editor"
+  spec.summary     = "Provides a editing admin interface to any Rails app for Bridgetown content"
   spec.description = spec.summary
   spec.license     = "MIT"
 
   spec.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r!^(test|script|spec|features)/!) }
 
-  spec.add_dependency "rails", "~> 6.0.0"
-  spec.add_dependency "webpacker", "~> 4.0"
+  spec.add_dependency "rails", "~> 6.0"
+  spec.add_dependency "bridgetown", "~> 0.18"
   spec.add_dependency "git", "~> 1.5"
+  spec.add_development_dependency "webpacker", "~> 4.0"
 end

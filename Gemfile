@@ -13,3 +13,7 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
+
+gem "bridgetown", "~> 0.18"
+gem "bridgetown-core", path: "../../BRIDGETOWN/bridgetown/bridgetown-core"
+gem "bridgetown-content-types", path: "../../BRIDGETOWN/bridgetown/bridgetown-content-types"

@@ -1,19 +1,12 @@
-<% if model.is_a? Yarii::DatafileModel %>
-  <a data-action="card#edit" href="<%= yarii_editor.edit_document_path(model, content_model: content_model_type, key_path: model.key_path) %>" class="card-footer-item">
-    <span class="icon"><i class="fa fa-pencil-square-o"></i></span>
-    <span>Edit</span>
-  </a>
-<% else %>
-  <a data-action="card#edit" href="<%= yarii_editor.edit_document_path(model, content_model: content_model_type) %>" class="card-footer-item">
-    <span class="icon"><i class="fa fa-pencil-square-o"></i></span>
-    <span>Edit</span>
-  </a>
-  <a href="<%= model.url %>" target="_blank" class="card-footer-item">
-    <span class="icon"><i class="fa fa-eye"></i></span>
-    <span>Preview</span>
-  </a>
-  <a data-action="card#destroy" href="<%= yarii_editor.destroy_document_path(model, content_model: content_model_type) %>" class="card-footer-item">
-    <span class="icon"><i class="fa fa-trash"></i></span>
-    <span>Delete</span>
-  </a>
-<% end %>
+<a data-action="card#edit" href="<%= yarii_editor.edit_document_path(model, content_type: content_item_type) %>" class="card-footer-item">
+  <span class="icon"><i class="fa fa-pencil-square-o"></i></span>
+  <span>Edit</span>
+</a>
+<a href="<%= CurrentSite.site.preview_base_url + model.url %>" target="_blank" class="card-footer-item">
+  <span class="icon"><i class="fa fa-eye"></i></span>
+  <span>Preview</span>
+</a>
+<a data-action="card#destroy" href="<%= yarii_editor.destroy_document_path(model, content_type: content_item_type) %>" class="card-footer-item">
+  <span class="icon"><i class="fa fa-trash"></i></span>
+  <span>Delete</span>
+</a>

@@ -13,7 +13,7 @@ current_page = (params[:page] || 1).to_i
       <h3 class="title level-item"><%= model_title %></h3>
     </div>
     <div class="level-right">
-      <button data-controller="new-document" data-action="new-document#open" data-new-document-path="<%= yarii_editor.new_document_path(content_model: model_type) %>" class="level-item button is-primary">
+      <button data-controller="new-document" data-action="new-document#open" data-new-document-path="<%= yarii_editor.new_document_path(content_type: model_type) %>" class="level-item button is-primary">
         <span class="icon"><i class="fa fa-plus"></i></span>
         <span>New</span>
       </button>

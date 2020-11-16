@@ -39,6 +39,9 @@ module Yarii
     def needs_pull?(remote: nil)
       @git.fetch(@remote || remote)
       @git.lib.diff_name_status('HEAD','@{upstream}').length > 0
+    rescue Git::GitExecuteError => e
+      Rails.logger.warn("Encountered a Git error while pulling: #{e.message}")
+      false
     end
 
     def commit(message:)

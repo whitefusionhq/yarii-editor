@@ -5,6 +5,7 @@ module CurrentSite
     if newSite.nil?
       newSite = Yarii::Site.first
     end
+    newSite.bridgetown
     self.site = newSite
   end
 

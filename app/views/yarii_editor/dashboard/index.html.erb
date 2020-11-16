@@ -4,7 +4,7 @@
     <% @custom_lists.each do |model_details| %>
       <%= render 'list', model_type: model_details[:model_type], model_details: model_details %>
     <% end %>
-    <% current_site.content_models.schema.each do |model_type, model_details| %>
+    <% current_site.content_types.schema.each do |model_type, model_details| %>
       <%= render 'list', model_type: model_type, model_details: model_details %>
     <% end %>
   </ul>

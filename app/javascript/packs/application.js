@@ -1,4 +1,5 @@
-require("@rails/ujs").start()
+//require("@rails/ujs").start()
 
 import '../../styles/application.scss'
-import "controllers"
+import 'easymde/dist/easymde.min.css'
+import "../controllers"

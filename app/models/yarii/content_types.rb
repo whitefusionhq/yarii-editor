@@ -1,12 +1,11 @@
 require "safe_yaml"
 
 module Yarii
-  class ContentModels
-    attr_accessor :schema, :site
+  class ContentTypes
+    attr_accessor :schema
 
     def initialize(yarii_site, yaml_path)
-      @yarii_site = yarii_site
-      @site = yarii_site.bridgetown
+      @yarii_site = yarii_site # TODO: still needed?
 
       @schema = ::SafeYAML.load(File.open(yaml_path))
       @schema = @schema[Rails.env]&.with_indifferent_access
@@ -14,12 +13,12 @@ module Yarii
         raise "No content model schema was found for the #{Rails.env} environment"
       end
 
-      setup_content_model_klasses
+      setup_content_item_klasses
     end
 
-    def setup_content_model_klasses
-      schema.values.each do |content_model|
-        content_model["klass"] = Kernel.const_get(content_model['class_name'])
+    def setup_content_item_klasses
+      schema.values.each do |content_item|
+        content_item["klass"] = Kernel.const_get(content_item['class_name'])
       end
     end
 
@@ -28,11 +27,11 @@ module Yarii
     end
 
     def field_names_for_schema(model_type)
-      content_model = schema_for_type(model_type)
+      content_item = schema_for_type(model_type)
       [
-        content_model['primary_fields'],
-        content_model['additional_fields'],
-        content_model['content_fields']
+        content_item['primary_fields'],
+        content_item['additional_fields'],
+        content_item['content_fields']
       ]
         .compact
         .flatten

@@ -1,3 +1,4 @@
+require "bridgetown"
 require "yarii-editor/engine"
 require "yarii-editor/setup_current_site"
 require "yarii-editor/setup_current_user"

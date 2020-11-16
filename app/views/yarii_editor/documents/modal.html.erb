@@ -1,13 +1,13 @@
 <%-
   path = nil
   if action_name == "new"
-    path = yarii_editor.create_document_path(content_model: params[:content_model])
+    path = yarii_editor.create_document_path(content_type: params[:content_type])
     http_method = "post"
   else
     if params[:key_path]
-      path = yarii_editor.update_document_path(@doc, content_model: params[:content_model], key_path: params[:key_path])
+      path = yarii_editor.update_document_path(@doc, content_type: params[:content_type], key_path: params[:key_path])
     else
-      path = yarii_editor.update_document_path(@doc, content_model: params[:content_model])
+      path = yarii_editor.update_document_path(@doc, content_type: params[:content_type])
     end
     http_method = "put"
   end
@@ -16,7 +16,7 @@
   data-controller="editor-modal"
   data-editor-modal-http-method="<%= http_method %>"
   data-editor-modal-path="<%= path %>"
-  data-editor-modal-content-model="<%= params[:content_model] %>"
+  data-editor-modal-content-model="<%= params[:content_type] %>"
   data-editor-modal-model-id="<%= params[:id] %>"
   data-editor-modal-publishing-menu-path="<%= yarii_editor.publishing_menu_path %>"
   id="editor-modal"
@@ -30,7 +30,7 @@
     </header>
     <section class="modal-card-body">
       <%= form_tag do %>
-        <% current_site.content_models.schema_for_type(params[:content_model])[:primary_fields]&.each do |field| %>
+        <% current_site.content_types.schema_for_type(params[:content_type])[:primary_fields]&.each do |field| %>
           <%= add_field field[:field_type], {
             variable: field[:field_name],
             label: field[:label],
@@ -43,11 +43,11 @@
         <div data-target="editor-modal.additionalFields" class="is-hidden mb-4">
           <div class="field">
             <div class="control">
-              <%= hidden_field_tag "#{params[:content_model]}[published]", false %>
-              <label class="label"><%= check_box_tag "#{params[:content_model]}[published]", true, @doc.published %> &nbsp;Publish to Public?</label>
+              <%= hidden_field_tag "#{params[:content_type]}[published]", false %>
+              <label class="label"><%= check_box_tag "#{params[:content_type]}[published]", true, @doc.published %> &nbsp;Publish to Public?</label>
             </div>
           </div>
-          <% current_site.content_models.schema_for_type(params[:content_model])[:additional_fields]&.each do |field| %>
+          <% current_site.content_types.schema_for_type(params[:content_type])[:additional_fields]&.each do |field| %>
             <%= add_field field[:field_type], {
               variable: field[:field_name],
               label: field[:label],
@@ -57,7 +57,7 @@
           <% end %>
         </div>
 
-        <% current_site.content_models.schema_for_type(params[:content_model])[:content_fields]&.each do |field| %>
+        <% current_site.content_types.schema_for_type(params[:content_type])[:content_fields]&.each do |field| %>
           <%= add_field field[:field_type], {
             variable: field[:field_name],
             label: field[:label],

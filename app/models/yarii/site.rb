@@ -14,12 +14,12 @@ module Yarii
       @repository ||= Yarii::Repository.new(git_repo_path)
     end
 
-    def content_models
-      return @content_models if @content_models
+    def content_types
+      return @content_types if @content_types
 
-      yaml_path = Pathname.new(content_base_path).parent.join('.yarii', 'content_models.yml')
+      yaml_path = Pathname.new(content_base_path).parent.join('.yarii', 'content_types.yml')
       if (File.exist?(yaml_path))
-        @content_models = ContentModels.new(self, yaml_path)
+        @content_types = ContentTypes.new(self, yaml_path)
       else
         raise "No content models YAML file was found at #{yaml_path}"
       end
@@ -58,7 +58,7 @@ module Yarii
     end
 
     def remote_is_up_to_date?
-      # NOTE: the Jekyll site config needs to include .well-known in the list of
+      # NOTE: the site config needs to include .well-known in the list of
       # folders to build! Otherwise this won't work!
       status_path = File.join(content_base_path, '.well-known', 'yarii-status')
       if (File.exist?(status_path))
@@ -74,7 +74,7 @@ module Yarii
       if "preview_build_command".in?(self.class.columns.map(&:name))
         attributes["preview_build_command"]
       else
-        'bundle exec jekyll build --unpublished'
+        'bundle exec bridgetown build --unpublished'
       end
     end
 
@@ -88,9 +88,8 @@ module Yarii
   end
 end
 
-Bridgetown::ContentModel.class_eval do
-  include YariiEditor::ModelCallbacks
-
+Bridgetown::ContentTypes::Base.include YariiEditor::ModelCallbacks
+Bridgetown::ContentTypes::Base.class_eval do
   def will_be_published?
     return false if respond_to?(:published) and published === false
     return false if respond_to?(:draft) and draft

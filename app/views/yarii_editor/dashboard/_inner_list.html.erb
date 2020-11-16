@@ -8,36 +8,31 @@ pagination = Rails.configuration.x.yarii_pagination_size.presence || 10
 page_start = pagination * (current_page - 1)
 page_end = pagination * current_page
 
-all_models = if model_details[:datafile]
-  # Deprecated
-  model_class.all(model_details[:datafile])
-else
-  order_by = model_details[:order_by] || :posted_datetime
-  order_direction = model_details[:order_direction] || :desc
-  if model_details[:filter] and model_details[:filter][:hashtags]
-    Bridgetown::ContentModel.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction).select do |model|
-      if model.respond_to?(:tags) and model.tags.present?
-        tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
-        (tags & model_details[:filter][:hashtags]).present?
-      end
+order_by = model_details[:order_by] || :posted_datetime
+order_direction = model_details[:order_direction] || :desc
+all_models = if model_details[:filter] and model_details[:filter][:hashtags]
+  Bridgetown::ContentTypes::Base.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction).select do |model|
+    if model.respond_to?(:tags) and model.tags.present?
+      tags = model.tags.is_a?(Array) ? model.tags : model.tags.split(' ')
+      (tags & model_details[:filter][:hashtags]).present?
     end
-  elsif model_details[:filter] and model_details[:filter][:categories]
-    Bridgetown::ContentModel.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction).select do |model|
-      categories = model.as_json['category'] || model.as_json['categories']
-      if categories.present?
-        categories = categories.is_a?(Array) ? categories : categories.split(' ')
-        (categories & model_details[:filter][:categories]).present?
-      end
-    end
-  else
-    Bridgetown::ContentModel.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction)
   end
+elsif model_details[:filter] and model_details[:filter][:categories]
+  Bridgetown::ContentTypes::Base.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction).select do |model|
+    categories = model.as_json['category'] || model.as_json['categories']
+    if categories.present?
+      categories = categories.is_a?(Array) ? categories : categories.split(' ')
+      (categories & model_details[:filter][:categories]).present?
+    end
+  end
+else
+  Bridgetown::ContentTypes::Base.find_all(model_type, site: current_site.bridgetown, order_by: order_by, order_direction: order_direction)
 end
 
 models = all_models[page_start...page_end]
 if models.present?
   models.each do |model| %>
-    <%= render 'yarii_editor/dashboard/card', model_class: model_class, model: model, content_model_type: model_type %>
+    <%= render 'yarii_editor/dashboard/card', model_class: model_class, model: model, content_item_type: model_type %>
 <%
     if models.length == all_models.length
       @inner_list_done = true

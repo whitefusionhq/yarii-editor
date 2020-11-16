@@ -1,5 +1,5 @@
 <%
-schema = current_site.content_models.schema_for_type(content_model_type)
+schema = current_site.content_types.schema_for_type(content_item_type)
 model_image = model.send(schema.fetch(:card_image_field, :image))
 if model_image.present? -%>
   <div class="card-image">

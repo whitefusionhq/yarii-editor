@@ -1,10 +1,10 @@
-<% schema = current_site.content_models.schema_for_type(content_model_type) -%>
+<% schema = current_site.content_types.schema_for_type(content_item_type) -%>
 <header class="card-header">
   <p class="card-header-title">
     <%= model.send(schema.fetch(:card_title_field, :title)) || model.url %>
   </p>
 </header>
-<%= render "yarii_editor/model_cards/image_figure", model: model, content_model_type: content_model_type %>
+<%= render "yarii_editor/model_cards/image_figure", model: model, content_item_type: content_item_type %>
 <div class="card-content">
   <div class="content">
     <p><%= model.send(schema.fetch(:card_description_field, :subtitle)) || model.content&.truncate(250) %></p>
@@ -16,5 +16,5 @@
   </div>
 </div>
 <footer class="card-footer">
-  <%= render 'yarii_editor/model_cards/standard_footer_buttons', model: model, content_model_type: content_model_type %>
+  <%= render 'yarii_editor/model_cards/standard_footer_buttons', model: model, content_item_type: content_item_type %>
 </footer>

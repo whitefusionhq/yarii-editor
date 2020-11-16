@@ -1,6 +1,15 @@
 {
   "name": "yarii-editor",
-  "private": true,
+  "version": "0.5.0",
+  "description": "Provides a editing admin interface to any Rails app for Bridgetown content",
+  "main": "app/dist/packs/application.js",
+  "repository": "https://github.com/whitefusionhq/yarii-editor",
+  "author": "Jared White",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "babel": "NODE_ENV=production babel app/javascript -d app/dist --copy-files"
+  },
   "dependencies": {
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
@@ -11,11 +20,17 @@
     "easymde": "^2.6.1",
     "html-loader": "^0.5.5",
     "stimulus": "^1.1.1",
-    "stimulus-jolt": "^1.0.0",
     "turbolinks": "^5.2.0"
   },
-  "version": "0.1.0",
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
     "webpack-dev-server": "^3.8.1"
-  }
+  },
+  "files": [
+    "app/dist",
+    "app/styles"
+  ]
 }
