@@ -1,7 +1,7 @@
 <% schema = current_site.content_types.schema_for_type(content_item_type) -%>
 <header class="card-header">
   <p class="card-header-title">
-    <%= model.send(schema.fetch(:card_title_field, :title)) || model.url %>
+    <%= model.send(schema.fetch(:card_title_field, :title)) || model.relative_path %>
   </p>
 </header>
 <%= render "yarii_editor/model_cards/image_figure", model: model, content_item_type: content_item_type %>
